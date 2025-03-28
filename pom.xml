@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>SafetyNet</artifactId>
+    <artifactId>PayMyBuddy</artifactId> <!-- Changement du nom du projet -->
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -130,10 +130,10 @@
                             <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
                             <excludes>
                                 <!-- Exclure les packages non souhaités -->
-                                <exclude>com/safetyNet/safetyNetSystem/dao/**</exclude>
-                                <exclude>com/safetyNet/safetyNetSystem/model/**</exclude>
-                                <exclude>com/safetyNet/safetyNetSystem/dto/**</exclude>
-                                <exclude>com/safetyNet/safetyNetSystem/util/**</exclude>
+                                <exclude>com/payMyBuddy/payMyBuddySystem/dao/**</exclude> <!-- Changement du nom de package -->
+                                <exclude>com/payMyBuddy/payMyBuddySystem/model/**</exclude> <!-- Changement du nom de package -->
+                                <exclude>com/payMyBuddy/payMyBuddySystem/dto/**</exclude> <!-- Changement du nom de package -->
+                                <exclude>com/payMyBuddy/payMyBuddySystem/util/**</exclude> <!-- Changement du nom de package -->
                             </excludes>
                         </configuration>
                     </execution>
