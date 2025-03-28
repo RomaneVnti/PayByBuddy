@@ -25,6 +25,13 @@
             <version>${spring-boot.version}</version>
         </dependency>
 
+        <!-- Spring Boot Starter Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
         <!-- Log4j for Logging -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -66,12 +73,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.26</version>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>3.1.0</version> <!-- Assure-toi d'utiliser une version compatible avec Spring Boot 3 -->
         </dependency>
 
     </dependencies>
