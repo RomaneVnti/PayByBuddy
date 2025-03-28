@@ -1,6 +1,7 @@
 package com.paymybuddy.service;
 
 import com.paymybuddy.dao.UserDAO;
+import com.paymybuddy.exception.EmailAlreadyExistsException;
 import com.paymybuddy.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +16,14 @@ public class UserService {
     @Autowired
     private UserDAO userDAO;
 
-    // Utilisation de BCrypt pour hasher le mot de passe
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    // Méthode pour créer un utilisateur
     @Transactional
     public User createUser(String username, String email, String password) {
         // Vérifie si l'email existe déjà
         User existingUser = userDAO.findByEmail(email);
         if (existingUser != null) {
-            throw new RuntimeException("Email already in use");
+            throw new EmailAlreadyExistsException("An account with this email already exists.");
         }
 
         // Hash du mot de passe
@@ -37,11 +36,6 @@ public class UserService {
         newUser.setPassword(hashedPassword);
         newUser.setCreatedAt(LocalDateTime.now());
 
-        // Log de création
-        System.out.println("Creating user with email: " + email);
-        System.out.println("Saving user to database: " + newUser);
-
-        // Enregistre l'utilisateur dans la base de données
         return userDAO.save(newUser);
     }
 }
