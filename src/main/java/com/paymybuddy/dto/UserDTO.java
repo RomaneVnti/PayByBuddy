@@ -38,6 +38,9 @@ public class UserDTO {
     )
     private String password;
 
+    public UserDTO(String johnDoe, String mail, String password123) {
+    }
+
     /**
      * Retourne le nom d'utilisateur.
      *

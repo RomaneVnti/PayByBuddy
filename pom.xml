@@ -10,7 +10,7 @@
 
     <properties>
         <java.version>21</java.version>
-        <spring-boot.version>3.3.2</spring-boot.version>
+        <spring-boot.version>3.4.2</spring-boot.version>
         <log4j.version>2.20.0</log4j.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -81,6 +81,20 @@
             <version>${spring-boot.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.12.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+
 
 
 
@@ -92,7 +106,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>${spring-boot.version}</version> <!-- Version mise à jour -->
             </plugin>
 
             <!-- Maven Compiler Plugin -->
@@ -160,16 +174,19 @@
                         <configuration>
                             <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
                             <excludes>
-                                <!-- Exclure les packages non souhaités -->
-                                <exclude>com/payMyBuddy/payMyBuddySystem/dao/**</exclude> <!-- Changement du nom de package -->
-                                <exclude>com/payMyBuddy/payMyBuddySystem/model/**</exclude> <!-- Changement du nom de package -->
-                                <exclude>com/payMyBuddy/payMyBuddySystem/dto/**</exclude> <!-- Changement du nom de package -->
-                                <exclude>com/payMyBuddy/payMyBuddySystem/util/**</exclude> <!-- Changement du nom de package -->
+                                <!-- Exclure les packages non souhaités, garder seulement controller et service -->
+                                <exclude>com/paymybuddy/model/**</exclude>
+                                <exclude>com/paymybuddy/exception/**</exclude>
+                                <exclude>com/paymybuddy/dao/**</exclude>
+                                <exclude>com/paymybuddy/config/**</exclude>
+                                <exclude>com/paymybuddy/dto/**</exclude>
                             </excludes>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+
         </plugins>
     </build>
 
