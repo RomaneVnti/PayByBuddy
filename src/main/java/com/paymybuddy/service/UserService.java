@@ -10,26 +10,44 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+/**
+ * Service gérant les opérations liées aux utilisateurs.
+ */
 @Service
 public class UserService {
 
+    private final UserDAO userDAO;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    /**
+     * Constructeur avec injection de dépendances.
+     *
+     * @param userDAO DAO permettant d'accéder aux données des utilisateurs
+     */
     @Autowired
-    private UserDAO userDAO;
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
 
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
+    /**
+     * Crée un nouvel utilisateur avec son nom d'utilisateur, son email et son mot de passe.
+     * Le mot de passe est hashé avant d'être enregistré.
+     *
+     * @param username Nom d'utilisateur
+     * @param email    Adresse email
+     * @param password Mot de passe (non hashé)
+     * @return L'utilisateur nouvellement créé
+     * @throws EmailAlreadyExistsException si un utilisateur avec le même email existe déjà
+     */
     @Transactional
     public User createUser(String username, String email, String password) {
-        // Vérifie si l'email existe déjà
-        User existingUser = userDAO.findByEmail(email);
-        if (existingUser != null) {
+        if (userDAO.findByEmail(email) != null) {
             throw new EmailAlreadyExistsException("An account with this email already exists.");
         }
 
-        // Hash du mot de passe
         String hashedPassword = passwordEncoder.encode(password);
 
-        // Crée un nouvel utilisateur
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setEmail(email);
