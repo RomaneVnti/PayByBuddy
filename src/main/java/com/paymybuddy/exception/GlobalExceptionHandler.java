@@ -32,6 +32,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InvalidLoginException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidLogin(InvalidLoginException ex) {
+        // Créer un objet ErrorResponse avec le code d'erreur 401 (Unauthorized) et le message
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
+
+        // Retourner la réponse avec le statut HTTP 401 et le message d'erreur
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
     /**
      * Gère les exceptions de validation des arguments de méthode.
      * Cette méthode est appelée lorsque les validations d'entrée (@Valid) échouent,
@@ -39,7 +48,7 @@ public class GlobalExceptionHandler {
      *
      * @param ex l'exception de validation capturée
      * @return une ResponseEntity contenant un objet ErrorResponse avec le premier message d'erreur
-     *         et un statut HTTP 400 (Bad Request)
+     * et un statut HTTP 400 (Bad Request)
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {

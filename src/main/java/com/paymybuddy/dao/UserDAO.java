@@ -25,16 +25,32 @@ public class UserDAO {
      */
     public User findByEmail(String email) {
         try {
-            // Exécute une requête JPQL pour trouver l'utilisateur par email
             return entityManager.createQuery("FROM User WHERE email = :email", User.class)
                     .setParameter("email", email)
                     .getSingleResult();
         } catch (NoResultException e) {
-            // Si aucun utilisateur n'est trouvé, retourne null
             return null;
         } catch (Exception e) {
-            // Gestion des autres exceptions potentielles
             System.err.println("Error finding user by email: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Recherche un utilisateur par son nom d'utilisateur.
+     *
+     * @param username le nom d'utilisateur à rechercher
+     * @return l'utilisateur correspondant au nom d'utilisateur ou null si aucun utilisateur n'est trouvé
+     */
+    public User findByUsername(String username) {
+        try {
+            return entityManager.createQuery("FROM User WHERE username = :username", User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } catch (Exception e) {
+            System.err.println("Error finding user by username: " + e.getMessage());
             return null;
         }
     }
@@ -48,18 +64,33 @@ public class UserDAO {
      */
     public User save(User user) {
         try {
-            // Persiste l'utilisateur dans la base de données
             entityManager.persist(user);
-
-            // Log de confirmation
             System.out.println("User saved successfully: " + user);
-
             return user;
         } catch (Exception e) {
-            // Gestion et log des erreurs
             System.err.println("Error saving user: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Error saving user", e);
+        }
+    }
+
+    /**
+     * Met à jour un utilisateur existant dans la base de données.
+     *
+     * @param user l'utilisateur avec les informations mises à jour
+     * @return l'utilisateur mis à jour
+     * @throws RuntimeException si une erreur survient lors de la mise à jour
+     */
+    public User update(User user) {
+        try {
+            // Utilisation de merge() pour mettre à jour l'utilisateur existant
+            User updatedUser = entityManager.merge(user);
+            System.out.println("User updated successfully: " + updatedUser);
+            return updatedUser;
+        } catch (Exception e) {
+            System.err.println("Error updating user: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Error updating user", e);
         }
     }
 }

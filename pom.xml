@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.paymybuddy</groupId>
-    <artifactId>PayMyBuddy</artifactId> <!-- Changement du nom du projet -->
+    <artifactId>PayMyBuddy</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -81,6 +81,7 @@
             <version>${spring-boot.version}</version>
         </dependency>
 
+        <!-- JJWT Dependency -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
@@ -93,11 +94,6 @@
             <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
-
-
-
-
-
     </dependencies>
 
     <build>
@@ -106,7 +102,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version> <!-- Version mise à jour -->
+                <version>${spring-boot.version}</version>
             </plugin>
 
             <!-- Maven Compiler Plugin -->
@@ -174,7 +170,7 @@
                         <configuration>
                             <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
                             <excludes>
-                                <!-- Exclure les packages non souhaités, garder seulement controller et service -->
+                                <!-- Exclure les packages non souhaités -->
                                 <exclude>com/paymybuddy/model/**</exclude>
                                 <exclude>com/paymybuddy/exception/**</exclude>
                                 <exclude>com/paymybuddy/dao/**</exclude>
@@ -185,8 +181,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
         </plugins>
     </build>
 
