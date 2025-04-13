@@ -1,4 +1,4 @@
-package ServiceTest;
+package ControllerTest;
 
 import com.paymybuddy.controller.UserController;
 import com.paymybuddy.dto.UserDTO;
