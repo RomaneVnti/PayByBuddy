@@ -53,4 +53,8 @@ public class JwtTokenProvider {
     private boolean isTokenExpired(String token) {
         return getClaimsFromToken(token).getExpiration().before(new Date());
     }
+
+    public Key getSigningKey() {
+        return secretKey;
+    }
 }

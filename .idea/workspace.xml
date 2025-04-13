@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fb5faf1-2af7-49b1-820d-8f54738d1560" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/LoginControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/SecurityTest/JwtTokenProviderTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/Transactions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/Transactions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/UserRelations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/UserRelations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ServiceTest/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/security/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/security/JwtTokenProvider.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +55,7 @@
     "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors"
   }
 }]]></component>
-  <component name="RunManager" selected="Maven.Run">
+  <component name="RunManager" selected="Maven.Test">
     <configuration name="Run" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -166,7 +162,6 @@
               <list>
                 <option value="clean" />
                 <option value="install" />
-                <option value="-U" />
               </list>
             </option>
             <option name="multimoduleDir" />
