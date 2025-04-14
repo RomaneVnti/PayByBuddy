@@ -32,7 +32,8 @@ public class SecurityConfig {
                                 .ignoringRequestMatchers("/profil")
                                 .ignoringRequestMatchers("/inscription")
                                 .ignoringRequestMatchers("/connection")
-                        // Désactiver CSRF pour cette route uniquement
+                        .ignoringRequestMatchers("/user/relations")
+                        .ignoringRequestMatchers("/user/relations/add")
                 )
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/user/create").permitAll()
@@ -42,10 +43,12 @@ public class SecurityConfig {
                         .requestMatchers("/transfert").permitAll()
                         .requestMatchers("/profil").permitAll()
                         .requestMatchers("/inscription").permitAll()
-                        .requestMatchers("/connection").permitAll()// Permet l'accès à la route de création d'utilisateur sans authentification
-                        .anyRequest().authenticated()  // Authentifie toutes les autres requêtes
+                        .requestMatchers("/connection").permitAll()
+                        .requestMatchers("/user/relations").permitAll()
+                        .requestMatchers("/user/relations/add").permitAll()
+                        .anyRequest().authenticated()
                 )
-                .formLogin().disable(); // Utiliser le formulaire de connexion de Spring Security (si tu en as un)
+                .formLogin().disable();
 
         return http.build();
     }
