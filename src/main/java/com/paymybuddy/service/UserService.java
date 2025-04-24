@@ -1,7 +1,9 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.dao.UserDAO;
 import com.paymybuddy.exception.EmailAlreadyExistsException;
+import com.paymybuddy.exception.UserNotFoundException;
 import com.paymybuddy.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 /**
- * Service gérant les opérations liées aux utilisateurs.
+ * Service gérant les opérations liées aux utilisateurs,
+ * telles que la création et la mise à jour des profils.
  */
 @Service
 public class UserService {
@@ -31,14 +34,13 @@ public class UserService {
     }
 
     /**
-     * Crée un nouvel utilisateur avec son nom d'utilisateur, son email et son mot de passe.
-     * Le mot de passe est hashé avant d'être enregistré.
+     * Crée un nouvel utilisateur avec un nom, un email et un mot de passe sécurisé (hashé).
      *
-     * @param username Nom d'utilisateur
-     * @param email    Adresse email
-     * @param password Mot de passe (non hashé)
-     * @return L'utilisateur nouvellement créé
-     * @throws EmailAlreadyExistsException si un utilisateur avec le même email existe déjà
+     * @param username le nom d'utilisateur
+     * @param email l'adresse email unique de l'utilisateur
+     * @param password le mot de passe en clair à hasher
+     * @return l'utilisateur nouvellement créé
+     * @throws EmailAlreadyExistsException si un utilisateur avec cet email existe déjà
      */
     @Transactional
     public User createUser(String username, String email, String password) {
@@ -55,5 +57,35 @@ public class UserService {
         newUser.setCreatedAt(LocalDateTime.now());
 
         return userDAO.save(newUser);
+    }
+
+    /**
+     * Met à jour les informations d’un utilisateur existant à partir d’un objet {@link UserDTO}.
+     *
+     * @param currentUserEmail l’email actuel de l'utilisateur connecté
+     * @param userDTO l'objet contenant les nouvelles données (nom, email, mot de passe)
+     * @return l'utilisateur mis à jour
+     * @throws UserNotFoundException si l'utilisateur avec l'email donné n'existe pas
+     * @throws EmailAlreadyExistsException si le nouvel email est déjà utilisé par un autre utilisateur
+     */
+    @Transactional
+    public User updateUser(String currentUserEmail, UserDTO userDTO) {
+        User existingUser = userDAO.findByEmail(currentUserEmail);
+        if (existingUser == null) {
+            throw new UserNotFoundException("User not found.");
+        }
+
+        if (!existingUser.getEmail().equals(userDTO.getEmail()) && userDAO.findByEmail(userDTO.getEmail()) != null) {
+            throw new EmailAlreadyExistsException("The email is already in use.");
+        }
+
+        existingUser.setUsername(userDTO.getUsername());
+        existingUser.setEmail(userDTO.getEmail());
+
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+
+        return userDAO.save(existingUser);
     }
 }

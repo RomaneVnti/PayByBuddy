@@ -7,34 +7,61 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Classe d'accès aux données (DAO) pour l'entité UserRelations.
+ * Gère les opérations de persistance et de recherche des relations entre utilisateurs dans la base de données.
+ */
 @Repository
 public class UserRelationsDAO {
 
     private final EntityManager entityManager;
 
+    /**
+     * Constructeur qui initialise l'EntityManager.
+     *
+     * @param entityManager le gestionnaire d'entités JPA
+     */
     public UserRelationsDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    // Récupérer les relations d'un utilisateur (user_id_1 ou user_id_2)
+    /**
+     * Récupère toutes les relations d'un utilisateur en fonction de son ID.
+     *
+     * @param userId l'identifiant de l'utilisateur
+     * @return une liste des relations où l'utilisateur est impliqué (soit en tant que user1, soit en tant que user2)
+     */
     public List<UserRelations> getUserRelations(int userId) {
-        return entityManager.createQuery("FROM UserRelations ur WHERE ur.user1.id = :userId OR ur.user2.id = :userId", UserRelations.class)
+        return entityManager.createQuery(
+                        "FROM UserRelations ur WHERE ur.user1.id = :userId OR ur.user2.id = :userId", UserRelations.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }
 
-    // Sauvegarder une relation dans la base de données
-
+    /**
+     * Sauvegarde une nouvelle relation dans la base de données.
+     *
+     * @param userRelations l'objet UserRelations à persister
+     * @return la relation persistée
+     * @throws RuntimeException si une erreur survient lors de la persistance
+     */
     public UserRelations save(UserRelations userRelations) {
         try {
             entityManager.persist(userRelations);
             return userRelations;
         } catch (Exception e) {
+            // Gestion des erreurs lors de la persistance
             throw new RuntimeException("Error saving relation", e);
         }
     }
 
-    // Trouver une relation entre deux utilisateurs en fonction de leurs identifiants
+    /**
+     * Recherche une relation entre deux utilisateurs en fonction de leurs identifiants.
+     *
+     * @param userId1 l'identifiant du premier utilisateur
+     * @param userId2 l'identifiant du second utilisateur
+     * @return la relation entre les deux utilisateurs, ou null si aucune relation n'est trouvée
+     */
     public UserRelations findRelationByIds(int userId1, int userId2) {
         try {
             return entityManager.createQuery(
@@ -44,7 +71,8 @@ public class UserRelationsDAO {
                     .setParameter("userId2", userId2)
                     .getSingleResult();
         } catch (Exception e) {
-            return null; // Si aucune relation n'est trouvée
+            // Si aucune relation n'est trouvée, renvoie null
+            return null;
         }
     }
 }

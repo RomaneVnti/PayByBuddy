@@ -38,7 +38,17 @@ public class UserDTO {
     )
     private String password;
 
-    public UserDTO(String johnDoe, String mail, String password123) {
+    /**
+     * Constructeur de UserDTO pour initialiser les valeurs de l'objet avec les informations de l'utilisateur.
+     *
+     * @param username le nom d'utilisateur
+     * @param email l'adresse email de l'utilisateur
+     * @param password le mot de passe de l'utilisateur
+     */
+    public UserDTO(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
     /**

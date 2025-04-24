@@ -13,16 +13,27 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Service de gestion des relations entre utilisateurs.
+ * Il permet de récupérer les relations existantes et d’en ajouter de nouvelles,
+ * tout en assurant les validations nécessaires.
+ */
 @Service
 public class RelationService {
 
     @Autowired
-    private UserDAO userDAO;  // Injection du UserDAO
+    private UserDAO userDAO;
 
     @Autowired
-    private UserRelationsDAO userRelationsDAO;  // Injection du UserRelationsDAO
+    private UserRelationsDAO userRelationsDAO;
 
-    // Récupérer la liste des relations d'un utilisateur
+    /**
+     * Récupère les adresses email des utilisateurs liés à un utilisateur donné.
+     *
+     * @param email l'adresse email de l'utilisateur
+     * @return une liste d'adresses email correspondant aux relations de l'utilisateur
+     * @throws EmailNotFoundException si l'utilisateur n'est pas trouvé
+     */
     public List<String> getUserRelations(String email) {
         User user = userDAO.findByEmail(email);
         if (user == null) {
@@ -30,10 +41,10 @@ public class RelationService {
         }
 
         List<UserRelations> userRelationsList = userRelationsDAO.getUserRelations(user.getUserId());
-
         List<String> relationsEmails = new ArrayList<>();
+
         for (UserRelations relation : userRelationsList) {
-            // Comparaison correcte pour des types int
+            // Ajoute l'email de l'autre utilisateur dans la relation
             if (relation.getUser1().getUserId() == user.getUserId()) {
                 relationsEmails.add(relation.getUser2().getEmail());
             } else {
@@ -44,8 +55,16 @@ public class RelationService {
         return relationsEmails;
     }
 
-
-    // Ajouter une relation pour un utilisateur
+    /**
+     * Ajoute une relation entre deux utilisateurs.
+     *
+     * @param userEmail      l'adresse email de l'utilisateur initiateur
+     * @param relationEmail  l'adresse email de l'utilisateur à ajouter comme relation
+     * @return true si la relation est ajoutée avec succès
+     * @throws SelfRelationException si un utilisateur tente de se lier à lui-même
+     * @throws EmailNotFoundException si l'un des deux emails n'existe pas
+     * @throws RuntimeException si la relation existe déjà
+     */
     @Transactional
     public boolean addRelation(String userEmail, String relationEmail) {
         if (userEmail.equalsIgnoreCase(relationEmail)) {
@@ -62,17 +81,17 @@ public class RelationService {
             throw new EmailNotFoundException("L'adresse email de l'utilisateur n'existe pas.");
         }
 
-        // Vérification de l'existence de la relation avec des int
+        // Vérifie si la relation existe déjà
         if (userRelationsDAO.findRelationByIds(user.getUserId(), relationUser.getUserId()) != null) {
             throw new RuntimeException("Cette relation existe déjà.");
         }
 
+        // Crée et enregistre la nouvelle relation
         UserRelations userRelations = new UserRelations();
         userRelations.setUser1(user);
         userRelations.setUser2(relationUser);
-
         userRelationsDAO.save(userRelations);
+
         return true;
     }
-
 }

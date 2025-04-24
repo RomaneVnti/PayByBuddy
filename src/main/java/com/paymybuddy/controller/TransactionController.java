@@ -12,6 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Contrôleur pour gérer les transactions des utilisateurs.
+ * Fournit des API pour créer et récupérer des transactions.
+ */
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
@@ -22,7 +26,15 @@ public class TransactionController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    // Route pour créer une transaction
+    /**
+     * Route pour créer une transaction.
+     * Cette méthode permet à un utilisateur de créer une nouvelle transaction en spécifiant le destinataire,
+     * la description et le montant.
+     *
+     * @param authorizationHeader Le token JWT dans l'en-tête Authorization.
+     * @param transactionRequest Contient les informations nécessaires pour créer la transaction.
+     * @return ResponseEntity contenant la transaction créée ou un message d'erreur.
+     */
     @PostMapping
     public ResponseEntity<?> createTransaction(
             @RequestHeader("Authorization") String authorizationHeader,
@@ -60,13 +72,48 @@ public class TransactionController {
         }
     }
 
-    // Classe interne pour la structure de la requête de transaction
+    /**
+     * Route pour récupérer toutes les transactions de l'utilisateur connecté.
+     * Cette méthode récupère toutes les transactions associées à l'utilisateur authentifié.
+     *
+     * @param authorizationHeader Le token JWT dans l'en-tête Authorization.
+     * @return ResponseEntity contenant les transactions de l'utilisateur ou un message d'erreur.
+     */
+    @GetMapping
+    public ResponseEntity<?> getUserTransactions(@RequestHeader("Authorization") String authorizationHeader) {
+        try {
+            // Extraction du token JWT de l'en-tête Authorization
+            String token = authorizationHeader.substring(7); // On enlève "Bearer "
+            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+            String currentUserEmail = claims.getSubject(); // Email de l'utilisateur connecté
+
+            // Appel au service pour récupérer les transactions
+            var transactions = transactionService.getUserTransactions(currentUserEmail);
+
+            // Retour de la liste des transactions avec un message de succès
+            return ResponseEntity.ok().body(new ApiResponse("Transactions récupérées avec succès", transactions));
+
+        } catch (JwtException e) {
+            // En cas de token invalide ou expiré
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("Token invalide ou expiré", null));
+        } catch (EmailNotFoundException e) {
+            // En cas d'e-mail non trouvé
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), null));
+        } catch (Exception e) {
+            // Pour toute autre erreur
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Erreur lors de la récupération des transactions", null));
+        }
+    }
+
+    /**
+     * Classe représentant la requête pour créer une transaction.
+     * Contient les informations nécessaires à la création d'une transaction.
+     */
     public static class TransactionRequest {
         private String receiverEmail;
         private String description;
         private double amount;
 
-        // Getters et setters
         public String getReceiverEmail() {
             return receiverEmail;
         }
@@ -92,7 +139,10 @@ public class TransactionController {
         }
     }
 
-    // Structure de la réponse
+    /**
+     * Classe représentant la réponse de l'API.
+     * Contient un message et des données supplémentaires.
+     */
     public static class ApiResponse {
         private String message;
         private Object data;

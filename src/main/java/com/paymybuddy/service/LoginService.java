@@ -9,42 +9,52 @@ import org.springframework.stereotype.Service;
 import com.paymybuddy.exception.InvalidLoginException;
 
 /**
- * Service pour gérer l'authentification des utilisateurs.
+ * Service responsable de l'authentification des utilisateurs.
+ * Il vérifie les informations d'identification et génère un token JWT en cas de succès.
  */
 @Service
 public class LoginService {
 
+    /**
+     * DAO permettant d'accéder aux données des utilisateurs.
+     */
     @Autowired
-    private UserDAO userDAO;  // DAO pour accéder aux données utilisateur
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;  // Pour vérifier les mots de passe
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;  // Fournisseur de token JWT
+    private UserDAO userDAO;
 
     /**
-     * Authentifie un utilisateur en vérifiant son email et son mot de passe.
-     * Si les informations sont valides, génère un token JWT.
+     * Encodeur de mot de passe utilisant l'algorithme BCrypt.
+     */
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    /**
+     * Fournisseur de jetons JWT pour générer des tokens sécurisés après authentification.
+     */
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    /**
+     * Authentifie un utilisateur via son email et mot de passe.
+     * Si les informations sont valides, un token JWT est généré.
      *
-     * @param email    L'email de l'utilisateur
-     * @param password Le mot de passe de l'utilisateur
-     * @return Le token JWT généré
-     * @throws IllegalArgumentException Si l'email ou le mot de passe est incorrect
+     * @param email    l'adresse email fournie par l'utilisateur
+     * @param password le mot de passe fourni par l'utilisateur
+     * @return une chaîne représentant le token JWT généré
+     * @throws InvalidLoginException si l'email n'existe pas ou si le mot de passe est incorrect
      */
     public String authenticate(String email, String password) {
-        // Recherche l'utilisateur dans la base de données
+        // Recherche de l'utilisateur par email
         User user = userDAO.findByEmail(email);
         if (user == null) {
             throw new InvalidLoginException("Invalid email or password");
         }
 
-        // Vérifie le mot de passe avec BCrypt
+        // Vérification du mot de passe
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new InvalidLoginException("Invalid email or password");
         }
 
-        // Génère et retourne un token JWT si l'utilisateur est authentifié
+        // Authentification réussie : génération du token JWT
         return jwtTokenProvider.generateToken(user);
     }
 }

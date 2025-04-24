@@ -5,48 +5,76 @@ import com.paymybuddy.dao.UserDAO;
 import com.paymybuddy.model.Transactions;
 import com.paymybuddy.model.User;
 import com.paymybuddy.exception.EmailNotFoundException;
-import com.paymybuddy.exception.InvalidAmountException;  // Ajouter une exception personnalisée pour l'invalidité du montant
+import com.paymybuddy.exception.InvalidAmountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+/**
+ * Service de gestion des transactions entre utilisateurs.
+ * Permet d’ajouter de nouvelles transactions et de récupérer
+ * les transactions liées à un utilisateur donné.
+ */
 @Service
 public class TransactionService {
 
     @Autowired
-    private UserDAO userDAO;  // Injection du UserDAO pour retrouver les utilisateurs
+    private UserDAO userDAO;
 
     @Autowired
-    private TransactionDAO transactionDAO;  // Injection du TransactionDAO pour persister les transactions
+    private TransactionDAO transactionDAO;
 
-    // Méthode pour ajouter une transaction
+    /**
+     * Ajoute une nouvelle transaction entre deux utilisateurs.
+     *
+     * @param senderEmail    l'email de l'expéditeur
+     * @param receiverEmail  l'email du destinataire
+     * @param description    la description de la transaction
+     * @param amount         le montant de la transaction (doit être strictement positif)
+     * @return l’objet {@link Transactions} créé et sauvegardé
+     * @throws InvalidAmountException si le montant est inférieur ou égal à zéro
+     * @throws EmailNotFoundException si l'expéditeur ou le destinataire n'existe pas
+     */
     public Transactions addTransaction(String senderEmail, String receiverEmail, String description, double amount) {
-        // Vérification que le montant est supérieur à zéro
         if (amount <= 0) {
             throw new InvalidAmountException("Le montant doit être supérieur à zéro.");
         }
 
-        // Recherche de l'utilisateur expéditeur via son email
         User sender = userDAO.findByEmail(senderEmail);
         if (sender == null) {
             throw new EmailNotFoundException("L'utilisateur expéditeur n'existe pas.");
         }
 
-        // Recherche de l'utilisateur destinataire via son email
         User receiver = userDAO.findByEmail(receiverEmail);
         if (receiver == null) {
             throw new EmailNotFoundException("L'utilisateur destinataire n'existe pas.");
         }
 
-        // Créer une nouvelle transaction
         Transactions transaction = new Transactions();
-        transaction.setSender(sender);  // Assignation de l'objet User sender
-        transaction.setReceiver(receiver);  // Assignation de l'objet User receiver
-        transaction.setDescription(description);  // Description de la transaction
-        transaction.setAmount(amount);  // Montant de la transaction
+        transaction.setSender(sender);
+        transaction.setReceiver(receiver);
+        transaction.setDescription(description);
+        transaction.setAmount(amount);
 
-        // Enregistrer la transaction dans la base de données
-        transactionDAO.save(transaction);  // Sauvegarde dans le DAO
-
+        transactionDAO.save(transaction);
         return transaction;
+    }
+
+    /**
+     * Récupère toutes les transactions associées à un utilisateur donné,
+     * en tant qu’expéditeur ou destinataire.
+     *
+     * @param userEmail l'adresse email de l'utilisateur concerné
+     * @return une liste de transactions impliquant cet utilisateur
+     * @throws EmailNotFoundException si l'utilisateur n'existe pas
+     */
+    public List<Transactions> getUserTransactions(String userEmail) {
+        User user = userDAO.findByEmail(userEmail);
+        if (user == null) {
+            throw new EmailNotFoundException("L'utilisateur n'existe pas.");
+        }
+
+        return transactionDAO.findBySenderOrReceiver(user);
     }
 }

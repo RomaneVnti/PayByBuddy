@@ -3,8 +3,11 @@ package ControllerTest;
 import com.paymybuddy.controller.UserController;
 import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.model.User;
+import com.paymybuddy.security.JwtTokenProvider;
 import com.paymybuddy.service.UserService;
 import com.paymybuddy.exception.EmailAlreadyExistsException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +33,16 @@ public class UserControllerTest {
     @InjectMocks
     private UserController userController;  // Injecte les mocks dans le contrôleur
 
+    @Mock
+    private JwtTokenProvider jwtTokenProvider; // Ajoute ce mock pour extraire les claims JWT
+
+    @Mock
+    private Claims claims;
+
+
     private UserDTO userDTO;  // Objet DTO représentant un utilisateur pour les tests
+
+
 
     /**
      * Méthode exécutée avant chaque test pour initialiser les objets nécessaires.
@@ -82,5 +94,53 @@ public class UserControllerTest {
             // Vérification que le message d'exception est correct
             assertEquals("An account with this email already exists.", e.getMessage());
         }
+    }
+
+    @Test
+    void updateUserProfile_Success() {
+        String validToken = "valid.jwt.token";
+        String currentUserEmail = "john.doe@example.com";
+
+        User updatedUser = new User();
+        updatedUser.setUsername("johnDoeUpdated");
+        updatedUser.setEmail(currentUserEmail);
+
+        when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
+        when(claims.getSubject()).thenReturn(currentUserEmail);
+        when(userService.updateUser(eq(currentUserEmail), eq(userDTO))).thenReturn(updatedUser);
+
+        ResponseEntity<?> response = userController.updateUserProfile("Bearer " + validToken, userDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody() instanceof User);
+        assertEquals("johnDoeUpdated", ((User) response.getBody()).getUsername());
+    }
+
+    @Test
+    void updateUserProfile_InvalidToken() {
+        String invalidToken = "invalid.token";
+
+        when(jwtTokenProvider.getClaimsFromToken(invalidToken)).thenThrow(new JwtException("Invalid token"));
+
+        ResponseEntity<?> response = userController.updateUserProfile("Bearer " + invalidToken, userDTO);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("Token invalide ou expiré", response.getBody());
+    }
+
+    @Test
+    void updateUserProfile_GeneralError() {
+        String validToken = "valid.jwt.token";
+        String currentUserEmail = "john.doe@example.com";
+
+        when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
+        when(claims.getSubject()).thenReturn(currentUserEmail);
+        when(userService.updateUser(eq(currentUserEmail), eq(userDTO)))
+                .thenThrow(new RuntimeException("Unexpected error"));
+
+        ResponseEntity<?> response = userController.updateUserProfile("Bearer " + validToken, userDTO);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Erreur lors de la mise à jour du profil", response.getBody());
     }
 }

@@ -36,7 +36,8 @@ public class LoginControllerTest {
      */
     @BeforeEach
     void setUp() {
-        loginDTO = new LoginDTO("john.doe@example.com", "password123");  // Initialisation du DTO de login
+        // Initialisation du DTO de login avec un email et un mot de passe pour les tests
+        loginDTO = new LoginDTO("john.doe@example.com", "password123");
     }
 
     /**

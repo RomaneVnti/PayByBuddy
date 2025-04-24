@@ -5,22 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fb5faf1-2af7-49b1-820d-8f54738d1560" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/TransactionController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/TransactionDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/UserRelationsDAO.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/EmailNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/InvalidAmountException.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/SelfRelationException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/TransactionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/UserNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/HomeControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/RelationControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/TransactionControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ServiceTest/RelationServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ServiceTest/TransactionServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/RelationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/RelationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/TransactionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/TransactionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/TransactionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/TransactionDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/UserRelationsDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/UserRelationsDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dto/LoginDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dto/LoginDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dto/UserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/ErrorResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/InvalidAmountException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/InvalidAmountException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/Transactions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/Transactions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/UserRelations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/UserRelations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/security/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/security/JwtTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/LoginService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/RelationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/RelationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/TransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/TransactionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/db/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ControllerTest/LoginControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/LoginControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ControllerTest/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ServiceTest/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ServiceTest/UserServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,24 +70,91 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven.Run.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Stop.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Test.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.clean et install.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.dependances.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.update.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.RelationControllerTest.executor": "Debug",
+    "JUnit.RelationControllerTest.getUserRelations_Empty.executor": "Debug",
+    "JUnit.TransactionControllerTest.createTransaction_ShouldReturnCreated_WhenValidRequest.executor": "Debug",
+    "JUnit.UserServiceTest.updateUser_ShouldUpdateUser_WhenValidEmailAndPasswordProvided.executor": "Run",
+    "Maven.Run.executor": "Run",
+    "Maven.Stop.executor": "Run",
+    "Maven.Test.executor": "Run",
+    "Maven.clean et install.executor": "Run",
+    "Maven.dependances.executor": "Run",
+    "Maven.update.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "dev",
+    "kotlin-language-version-configured": "true",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Maven.Run">
+    <configuration name="RelationControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PayMyBuddy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ControllerTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ControllerTest" />
+      <option name="MAIN_CLASS_NAME" value="ControllerTest.RelationControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RelationControllerTest.getUserRelations_Empty" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PayMyBuddy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ControllerTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ControllerTest" />
+      <option name="MAIN_CLASS_NAME" value="ControllerTest.RelationControllerTest" />
+      <option name="METHOD_NAME" value="getUserRelations_Empty" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TransactionControllerTest.createTransaction_ShouldReturnCreated_WhenValidRequest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PayMyBuddy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.paymybuddy.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.paymybuddy.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.paymybuddy.controller.TransactionControllerTest" />
+      <option name="METHOD_NAME" value="createTransaction_ShouldReturnCreated_WhenValidRequest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceTest.updateUser_ShouldUpdateUser_WhenValidEmailAndPasswordProvided" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PayMyBuddy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ServiceTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="ServiceTest.UserServiceTest" />
+      <option name="METHOD_NAME" value="updateUser_ShouldUpdateUser_WhenValidEmailAndPasswordProvided" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Run" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -255,6 +341,10 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="JUnit.RelationControllerTest" />
+      <item itemvalue="JUnit.RelationControllerTest.getUserRelations_Empty" />
+      <item itemvalue="JUnit.TransactionControllerTest.createTransaction_ShouldReturnCreated_WhenValidRequest" />
+      <item itemvalue="JUnit.UserServiceTest.updateUser_ShouldUpdateUser_WhenValidEmailAndPasswordProvided" />
       <item itemvalue="Maven.Run" />
       <item itemvalue="Maven.Test" />
       <item itemvalue="Maven.update" />
@@ -262,6 +352,14 @@
       <item itemvalue="Maven.dependances" />
       <item itemvalue="Maven.Stop" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.RelationControllerTest" />
+        <item itemvalue="JUnit.RelationControllerTest.getUserRelations_Empty" />
+        <item itemvalue="JUnit.TransactionControllerTest.createTransaction_ShouldReturnCreated_WhenValidRequest" />
+        <item itemvalue="JUnit.UserServiceTest.updateUser_ShouldUpdateUser_WhenValidEmailAndPasswordProvided" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

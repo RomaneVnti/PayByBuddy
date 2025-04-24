@@ -29,8 +29,10 @@ public class UserDAO {
                     .setParameter("email", email)
                     .getSingleResult();
         } catch (NoResultException e) {
+            // Si aucun utilisateur n'est trouvé, renvoie null
             return null;
         } catch (Exception e) {
+            // Gestion d'autres exceptions, log de l'erreur
             System.err.println("Error finding user by email: " + e.getMessage());
             return null;
         }
@@ -48,8 +50,10 @@ public class UserDAO {
                     .setParameter("username", username)
                     .getSingleResult();
         } catch (NoResultException e) {
+            // Si aucun utilisateur n'est trouvé, renvoie null
             return null;
         } catch (Exception e) {
+            // Gestion d'autres exceptions, log de l'erreur
             System.err.println("Error finding user by username: " + e.getMessage());
             return null;
         }
@@ -65,9 +69,11 @@ public class UserDAO {
     public User save(User user) {
         try {
             entityManager.persist(user);
+            // Log de succès
             System.out.println("User saved successfully: " + user);
             return user;
         } catch (Exception e) {
+            // Gestion des erreurs de persistance
             System.err.println("Error saving user: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Error saving user", e);
@@ -85,9 +91,11 @@ public class UserDAO {
         try {
             // Utilisation de merge() pour mettre à jour l'utilisateur existant
             User updatedUser = entityManager.merge(user);
+            // Log de succès
             System.out.println("User updated successfully: " + updatedUser);
             return updatedUser;
         } catch (Exception e) {
+            // Gestion des erreurs de mise à jour
             System.err.println("Error updating user: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Error updating user", e);
