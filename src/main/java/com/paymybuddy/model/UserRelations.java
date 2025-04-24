@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "User_relations")
+@Table(name = "user_relations")
 public class UserRelations {
 
     @Id
@@ -21,7 +21,7 @@ public class UserRelations {
     private User user2;
 
     @Column(name = "relationship_status", nullable = false)
-    private String relationshipStatus;
+    private String relationshipStatus = "ACCEPTEE";
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;

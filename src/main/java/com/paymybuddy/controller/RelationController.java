@@ -1,7 +1,7 @@
 package com.paymybuddy.controller;
 
 import com.paymybuddy.security.JwtTokenProvider;
-import com.paymybuddy.service.RelationService;  // Service pour gérer les relations
+import com.paymybuddy.service.RelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,35 +22,32 @@ public class RelationController {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private RelationService relationService;  // Service pour gérer les relations
+    private RelationService relationService;
 
-    /**
-     * Route pour afficher la liste des relations de l'utilisateur connecté
-     * Cette route récupère les relations de l'utilisateur à partir du service
-     */
+    // Route pour afficher la liste des relations de l'utilisateur connecté
     @GetMapping("/user/relations")
     public ResponseEntity<?> getUserRelations(@RequestHeader("Authorization") String authorizationHeader) {
         try {
-            // Extraire le token et récupérer les informations de l'utilisateur
-            String token = authorizationHeader.substring(7); // "Bearer " est enlevé
+            String token = authorizationHeader.substring(7);
             Claims claims = jwtTokenProvider.getClaimsFromToken(token);
             String username = claims.getSubject();
 
-            // Récupérer les relations de l'utilisateur depuis le service
+            // Récupérer les relations de l'utilisateur
             List<String> relations = relationService.getUserRelations(username);
 
-            // Retourner les relations sous forme de réponse JSON
-            return ResponseEntity.ok().body(new ApiResponse("Relations fetched successfully", relations));
+            if (relations.isEmpty()) {
+                return ResponseEntity.ok().body(new ApiResponse("Aucune relation trouvée", null));
+            }
+
+            return ResponseEntity.ok().body(new ApiResponse("Relations récupérées avec succès", relations));
         } catch (JwtException e) {
             return ResponseEntity.status(401).body(new ApiResponse("Token invalide ou expiré", null));
         }
     }
 
-    /**
-     * Route pour ajouter une relation à l'utilisateur connecté via l'email de la relation
-     * Accessible uniquement avec un token JWT valide
-     */
-    @PostMapping("/user/relations/add")
+
+    // Route pour ajouter une relation à l'utilisateur connecté via l'email de la relation
+    @PostMapping("/user/relation/add")
     public ResponseEntity<?> addRelation(@RequestHeader("Authorization") String authorizationHeader,
                                          @RequestBody AddRelationRequest request) {
         try {
@@ -71,7 +68,6 @@ public class RelationController {
         }
     }
 
-    // Classe pour recevoir les données du body JSON (email de la relation)
     public static class AddRelationRequest {
         private String relationEmail;
 
@@ -84,7 +80,6 @@ public class RelationController {
         }
     }
 
-    // Classe pour structurer la réponse JSON
     public static class ApiResponse {
         private String message;
         private Object data;

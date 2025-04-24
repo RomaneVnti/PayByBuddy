@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS paymybuddy;
 USE paymybuddy;
 
 -- Table User
-CREATE TABLE User (
+CREATE TABLE user (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -12,7 +12,7 @@ CREATE TABLE User (
 );
 
 -- Table User_relations
-CREATE TABLE User_relations (
+CREATE TABLE user_relations (
     relation_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     friend_id INT NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE User_relations (
 );
 
 -- Table Transactions
-CREATE TABLE Transactions (
+CREATE TABLE transactions (
     transaction_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id_sender INT NOT NULL,
     user_id_receiver INT NOT NULL,

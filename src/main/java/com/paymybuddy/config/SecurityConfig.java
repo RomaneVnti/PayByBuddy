@@ -33,7 +33,7 @@ public class SecurityConfig {
                                 .ignoringRequestMatchers("/inscription")
                                 .ignoringRequestMatchers("/connection")
                         .ignoringRequestMatchers("/user/relations")
-                        .ignoringRequestMatchers("/user/relations/add")
+                        .ignoringRequestMatchers("/user/relation/add")
                 )
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/user/create").permitAll()
@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/inscription").permitAll()
                         .requestMatchers("/connection").permitAll()
                         .requestMatchers("/user/relations").permitAll()
-                        .requestMatchers("/user/relations/add").permitAll()
+                        .requestMatchers("/user/relation/add").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin().disable();
