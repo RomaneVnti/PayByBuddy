@@ -34,6 +34,7 @@ public class SecurityConfig {
                                 .ignoringRequestMatchers("/connection")
                         .ignoringRequestMatchers("/user/relations")
                         .ignoringRequestMatchers("/user/relation/add")
+                        .ignoringRequestMatchers("/transaction")
                 )
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/user/create").permitAll()
@@ -46,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/connection").permitAll()
                         .requestMatchers("/user/relations").permitAll()
                         .requestMatchers("/user/relation/add").permitAll()
+                        .requestMatchers("/transaction").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin().disable();
