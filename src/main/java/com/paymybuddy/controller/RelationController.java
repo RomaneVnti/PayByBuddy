@@ -4,11 +4,7 @@ import com.paymybuddy.security.JwtTokenProvider;
 import com.paymybuddy.service.RelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -26,10 +22,13 @@ public class RelationController {
 
     // Route pour afficher la liste des relations de l'utilisateur connecté
     @GetMapping("/user/relations")
-    public ResponseEntity<?> getUserRelations(@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<?> getUserRelations(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
         try {
-            String token = authorizationHeader.substring(7);
-            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+            if (jwtToken.isEmpty()) {
+                return ResponseEntity.status(401).body(new ApiResponse("Aucun token trouvé", null));
+            }
+
+            Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
             String username = claims.getSubject();
 
             // Récupérer les relations de l'utilisateur
@@ -40,10 +39,12 @@ public class RelationController {
             }
 
             return ResponseEntity.ok().body(new ApiResponse("Relations récupérées avec succès", relations));
+
         } catch (JwtException e) {
             return ResponseEntity.status(401).body(new ApiResponse("Token invalide ou expiré", null));
         }
     }
+
 
 
     // Route pour ajouter une relation à l'utilisateur connecté via l'email de la relation

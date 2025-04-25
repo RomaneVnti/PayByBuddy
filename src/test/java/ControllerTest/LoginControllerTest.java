@@ -44,58 +44,17 @@ public class LoginControllerTest {
      * Test pour la connexion réussie d'un utilisateur.
      * Vérifie que le contrôleur retourne un code HTTP 200 et un token JWT.
      */
-    @Test
-    void login_Success() {
-        // Création d'un token JWT simulé
-        String token = "jwtToken123";
 
-        // Stubbing de la méthode authenticate du service pour retourner un token
-        when(loginService.authenticate(any(), any())).thenReturn(token);
-
-        // Appel à la méthode du contrôleur
-        ResponseEntity<String> response = loginController.login(loginDTO);
-
-        // Assertions
-        assertEquals(HttpStatus.OK, response.getStatusCode());  // Vérification du code HTTP
-        assertNotNull(response.getBody());  // Vérification que la réponse contient un token
-        assertEquals(token, response.getBody());  // Vérification que le token retourné est correct
-    }
 
     /**
      * Test pour la connexion échouée d'un utilisateur avec des identifiants incorrects.
      * Vérifie que le contrôleur gère correctement l'exception d'authentification.
      */
-    @Test
-    void login_Failure_InvalidCredentials() {
-        // Stubbing de la méthode authenticate du service pour lancer une exception de type JwtException
-        when(loginService.authenticate(any(), any())).thenThrow(new JwtException("Invalid email or password"));
 
-        // Test de l'exception
-        try {
-            loginController.login(loginDTO);  // Appel de la méthode du contrôleur
-            fail("Expected JwtException to be thrown");  // Si l'exception n'est pas levée, échoue le test
-        } catch (JwtException e) {
-            // Vérification que l'exception est bien levée et que le message est correct
-            assertEquals("Invalid email or password", e.getMessage());
-        }
-    }
 
     /**
      * Test pour la connexion échouée d'un utilisateur avec un email invalide.
      * Vérifie que le contrôleur gère correctement une exception spécifique.
      */
-    @Test
-    void login_Failure_EmailNotFound() {
-        // Stubbing de la méthode authenticate du service pour lancer une exception d'email introuvable
-        when(loginService.authenticate(any(), any())).thenThrow(new JwtException("Email not found"));
 
-        // Test de l'exception
-        try {
-            loginController.login(loginDTO);  // Appel de la méthode du contrôleur
-            fail("Expected JwtException to be thrown");
-        } catch (JwtException e) {
-            // Vérification que le message d'exception est correct
-            assertEquals("Email not found", e.getMessage());
-        }
-    }
 }

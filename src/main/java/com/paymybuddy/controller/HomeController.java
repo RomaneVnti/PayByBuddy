@@ -3,15 +3,18 @@ package com.paymybuddy.controller;
 import com.paymybuddy.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 
-@RestController  // Utiliser RestController pour une réponse JSON
+@Controller
 public class HomeController {
+
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -21,12 +24,9 @@ public class HomeController {
      * Cette route n'a pas besoin d'un token JWT car c'est une page d'inscription publique
      */
     @GetMapping("/inscription")
-    public ResponseEntity<?> showInscriptionPage() {
-        // Message JSON indiquant que le formulaire d'inscription peut être rempli
-        String inscriptionForm = "Formulaire d'inscription: Veuillez fournir vos informations pour vous inscrire.";
-
-        // Retourner un objet JSON avec les informations d'inscription
-        return ResponseEntity.ok().body(new ApiResponse("Inscription", inscriptionForm));
+    public String showInscriptionPage() {
+        // Si tu veux afficher la page d'inscription, tu renvoies la vue Thymeleaf
+        return "inscription";  // Assure-toi d'avoir un fichier inscription.html dans le dossier /src/main/resources/templates/
     }
 
     /**
@@ -34,12 +34,8 @@ public class HomeController {
      * Cette route n'a pas besoin d'un token JWT car c'est une page de connection publique
      */
     @GetMapping("/connection")
-    public ResponseEntity<?> showConnexionPage() {
-        // Message JSON indiquant que le formulaire de connexion peut être rempli
-        String connexionForm = "Formulaire de connection: Veuillez entrer vos identifiants pour vous connecter.";
-
-        // Retourner un objet JSON avec les informations de connexion
-        return ResponseEntity.ok().body(new ApiResponse("Connection", connexionForm));
+    public String showConnectionPage() {
+        return "connection";  // Assure-toi que le fichier connection.html existe dans /src/main/resources/templates/
     }
 
     /**
@@ -47,54 +43,46 @@ public class HomeController {
      * Cette route vérifie d'abord si l'utilisateur est authentifié via un token JWT
      */
     @GetMapping("/home")
-    public ResponseEntity<?> showHomePage(@RequestHeader("Authorization") String authorizationHeader) {
+    public String showHomePage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
+        if (jwtToken.isEmpty()) {
+            return "redirect:/connection";  // Si pas de token, rediriger vers la page de connexion
+        }
+
         try {
-            // Récupérer le token de l'en-tête Authorization (format "Bearer <token>")
-            String token = authorizationHeader.substring(7); // "Bearer " est enlevé
+            // Valider et extraire les informations du token JWT
+            Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
 
-            // Extraire les informations du token
-            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-
-            // Vérifier le nom d'utilisateur (par exemple l'email)
+            // Utiliser les informations du token pour afficher la page d'accueil
             String username = claims.getSubject();
-
-            // Exemple de données pour les transactions
-            String transactionsInfo = "Transactions de " + username + ": Transfert 1, Transfert 2, Transfert 3";
-
-            // Retourner un objet JSON avec les informations de transaction
-            return ResponseEntity.ok().body(new ApiResponse("Success", transactionsInfo));
-
+            return "home";  // Renvoie la vue home.html
         } catch (JwtException e) {
-            // Si le token est invalide ou expiré, renvoyer une erreur JSON
-            return ResponseEntity.status(401).body(new ApiResponse("Token invalide ou expiré", null));
+            // Si le token est invalide ou expiré, redirige vers la connexion
+            return "redirect:/connection";
         }
     }
+
+
 
     /**
      * Route pour afficher la page des relations
      * Cette route vérifie d'abord si l'utilisateur est authentifié via un token JWT
      */
     @GetMapping("/relations")
-    public ResponseEntity<?> showRelationsPage(@RequestHeader("Authorization") String authorizationHeader) {
+    public String showRelationPage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
+        if (jwtToken.isEmpty()) {
+            return "redirect:/connection";  // Si pas de token, rediriger vers la page de connexion
+        }
+
         try {
-            // Récupérer le token de l'en-tête Authorization (format "Bearer <token>")
-            String token = authorizationHeader.substring(7); // "Bearer " est enlevé
+            // Valider et extraire les informations du token JWT
+            Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
 
-            // Extraire les informations du token
-            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-
-            // Vérifier le nom d'utilisateur (par exemple l'email)
+            // Utiliser les informations du token pour afficher la page d'accueil
             String username = claims.getSubject();
-
-            // Exemple de données pour les relations
-            String relationsInfo = "Relations de " + username + ": ami1, ami2, ami3";
-
-            // Retourner un objet JSON avec les relations
-            return ResponseEntity.ok().body(new ApiResponse("Success", relationsInfo));
-
+            return "relations";  // Renvoie la vue home.html
         } catch (JwtException e) {
-            // Si le token est invalide ou expiré, renvoyer une erreur JSON
-            return ResponseEntity.status(401).body(new ApiResponse("Token invalide ou expiré", null));
+            // Si le token est invalide ou expiré, redirige vers la connexion
+            return "redirect:/connection";
         }
     }
 
@@ -102,27 +90,22 @@ public class HomeController {
      * Route pour afficher la page des transferts
      * Cette route vérifie d'abord si l'utilisateur est authentifié via un token JWT
      */
-    @GetMapping("/transfert")
-    public ResponseEntity<?> showTransfertPage(@RequestHeader("Authorization") String authorizationHeader) {
+    @GetMapping("/transfer")
+    public String showTransferPage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
+        if (jwtToken.isEmpty()) {
+            return "redirect:/connection";  // Si pas de token, rediriger vers la page de connexion
+        }
+
         try {
-            // Récupérer le token de l'en-tête Authorization (format "Bearer <token>")
-            String token = authorizationHeader.substring(7); // "Bearer " est enlevé
+            // Valider et extraire les informations du token JWT
+            Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
 
-            // Extraire les informations du token
-            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-
-            // Vérifier le nom d'utilisateur (par exemple l'email)
+            // Utiliser les informations du token pour afficher la page d'accueil
             String username = claims.getSubject();
-
-            // Exemple de données pour les transferts
-            String transfertInfo = "Transferts de " + username + ": Transfert 100€, Transfert 200€, Transfert 300€";
-
-            // Retourner un objet JSON avec les transferts
-            return ResponseEntity.ok().body(new ApiResponse("Success", transfertInfo));
-
+            return "transfer";  // Renvoie la vue home.html
         } catch (JwtException e) {
-            // Si le token est invalide ou expiré, renvoyer une erreur JSON
-            return ResponseEntity.status(401).body(new ApiResponse("Token invalide ou expiré", null));
+            // Si le token est invalide ou expiré, redirige vers la connexion
+            return "redirect:/connection";
         }
     }
 
@@ -131,26 +114,21 @@ public class HomeController {
      * Cette route vérifie d'abord si l'utilisateur est authentifié via un token JWT
      */
     @GetMapping("/profil")
-    public ResponseEntity<?> showProfilPage(@RequestHeader("Authorization") String authorizationHeader) {
+    public String showProfilPage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
+        if (jwtToken.isEmpty()) {
+            return "redirect:/connection";  // Si pas de token, rediriger vers la page de connexion
+        }
+
         try {
-            // Récupérer le token de l'en-tête Authorization (format "Bearer <token>")
-            String token = authorizationHeader.substring(7); // "Bearer " est enlevé
+            // Valider et extraire les informations du token JWT
+            Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
 
-            // Extraire les informations du token
-            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-
-            // Vérifier le nom d'utilisateur (par exemple l'email)
+            // Utiliser les informations du token pour afficher la page d'accueil
             String username = claims.getSubject();
-
-            // Exemple de données pour le profil
-            String profilInfo = "Profil de " + username + ": Nom: " + username + ", Email: " + username + "@example.com";
-
-            // Retourner un objet JSON avec les informations du profil
-            return ResponseEntity.ok().body(new ApiResponse("Success", profilInfo));
-
+            return "profil";  // Renvoie la vue home.html
         } catch (JwtException e) {
-            // Si le token est invalide ou expiré, renvoyer une erreur JSON
-            return ResponseEntity.status(401).body(new ApiResponse("Token invalide ou expiré", null));
+            // Si le token est invalide ou expiré, redirige vers la connexion
+            return "redirect:/connection";
         }
     }
 

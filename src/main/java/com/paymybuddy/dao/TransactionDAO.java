@@ -47,4 +47,5 @@ public class TransactionDAO {
                 .getResultList();  // Exécution de la requête et récupération des résultats
     }
 
+
 }

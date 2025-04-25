@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+
 /**
  * Contrôleur pour gérer les transactions des utilisateurs.
  * Fournit des API pour créer et récupérer des transactions.
@@ -90,20 +92,18 @@ public class TransactionController {
             // Appel au service pour récupérer les transactions
             var transactions = transactionService.getUserTransactions(currentUserEmail);
 
-            // Retour de la liste des transactions avec un message de succès
-            return ResponseEntity.ok().body(new ApiResponse("Transactions récupérées avec succès", transactions));
-
+            // Retourner les transactions dans le champ "transactions" sous "data"
+            return ResponseEntity.ok().body(Collections.singletonMap("data", Collections.singletonMap("transactions", transactions)));
         } catch (JwtException e) {
-            // En cas de token invalide ou expiré
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("Token invalide ou expiré", null));
         } catch (EmailNotFoundException e) {
-            // En cas d'e-mail non trouvé
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), null));
         } catch (Exception e) {
-            // Pour toute autre erreur
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Erreur lors de la récupération des transactions", null));
         }
     }
+
+
 
     /**
      * Classe représentant la requête pour créer une transaction.

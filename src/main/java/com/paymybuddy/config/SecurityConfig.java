@@ -25,7 +25,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/api/user/create")
-                        .ignoringRequestMatchers("/api/auth/login")
+                        .ignoringRequestMatchers("auth/login")
                                 .ignoringRequestMatchers("/home")
                                 .ignoringRequestMatchers("/relations")
                                 .ignoringRequestMatchers("/transfert")
@@ -39,7 +39,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/user/create").permitAll()
-                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("auth/login").permitAll()
                         .requestMatchers("/home").permitAll()
                         .requestMatchers("/relations").permitAll()
                         .requestMatchers("/transfert").permitAll()

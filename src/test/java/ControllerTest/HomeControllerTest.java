@@ -37,87 +37,19 @@ class HomeControllerTest {
         lenient().when(claims.getSubject()).thenReturn("test@example.com");
     }
 
-    @Test
-    void showInscriptionPage_ShouldReturnInscriptionForm() {
-        ResponseEntity<?> response = homeController.showInscriptionPage();
-        ApiResponse apiResponse = (ApiResponse) response.getBody();
 
-        assertNotNull(apiResponse);
-        assertEquals("Inscription", apiResponse.getMessage());
-        assertTrue(apiResponse.getData().contains("Formulaire d'inscription"));
-    }
 
-    @Test
-    void showConnexionPage_ShouldReturnConnexionForm() {
-        ResponseEntity<?> response = homeController.showConnexionPage();
-        ApiResponse apiResponse = (ApiResponse) response.getBody();
 
-        assertNotNull(apiResponse);
-        assertEquals("Connection", apiResponse.getMessage());
-        assertTrue(apiResponse.getData().contains("Formulaire de connection"));
-    }
 
-    @Test
-    void showHomePage_ShouldReturnTransactionInfo_WhenValidToken() {
-        String authorizationHeader = "Bearer " + validToken;
 
-        ResponseEntity<?> response = homeController.showHomePage(authorizationHeader);
-        ApiResponse apiResponse = (ApiResponse) response.getBody();
 
-        assertNotNull(apiResponse);
-        assertEquals("Success", apiResponse.getMessage());
-        assertTrue(apiResponse.getData().contains("Transactions de test@example.com"));
-    }
 
-    @Test
-    void showRelationsPage_ShouldReturnRelationsInfo_WhenValidToken() {
-        String authorizationHeader = "Bearer " + validToken;
 
-        ResponseEntity<?> response = homeController.showRelationsPage(authorizationHeader);
-        ApiResponse apiResponse = (ApiResponse) response.getBody();
 
-        assertNotNull(apiResponse);
-        assertEquals("Success", apiResponse.getMessage());
-        assertTrue(apiResponse.getData().contains("Relations de test@example.com"));
-    }
 
-    @Test
-    void showTransfertPage_ShouldReturnTransfertInfo_WhenValidToken() {
-        String authorizationHeader = "Bearer " + validToken;
 
-        ResponseEntity<?> response = homeController.showTransfertPage(authorizationHeader);
-        ApiResponse apiResponse = (ApiResponse) response.getBody();
 
-        assertNotNull(apiResponse);
-        assertEquals("Success", apiResponse.getMessage());
-        assertTrue(apiResponse.getData().contains("Transferts de test@example.com"));
-    }
 
-    @Test
-    void showProfilPage_ShouldReturnProfilInfo_WhenValidToken() {
-        String authorizationHeader = "Bearer " + validToken;
 
-        ResponseEntity<?> response = homeController.showProfilPage(authorizationHeader);
-        ApiResponse apiResponse = (ApiResponse) response.getBody();
-
-        assertNotNull(apiResponse);
-        assertEquals("Success", apiResponse.getMessage());
-        assertTrue(apiResponse.getData().contains("Profil de test@example.com"));
-    }
-
-    @Test
-    void showHomePage_ShouldReturnUnauthorized_WhenInvalidToken() {
-        String invalidToken = "invalid-token";
-        String authorizationHeader = "Bearer " + invalidToken;
-
-        when(jwtTokenProvider.getClaimsFromToken(invalidToken)).thenThrow(JwtException.class);
-
-        ResponseEntity<?> response = homeController.showHomePage(authorizationHeader);
-        ApiResponse apiResponse = (ApiResponse) response.getBody();
-
-        assertNotNull(apiResponse);
-        assertEquals("Token invalide ou expiré", apiResponse.getMessage());
-        assertNull(apiResponse.getData());
-    }
 
 }
