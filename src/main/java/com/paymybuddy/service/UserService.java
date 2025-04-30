@@ -74,10 +74,13 @@ public class UserService {
         if (existingUser == null) {
             throw new UserNotFoundException("User not found.");
         }
-
-        if (!existingUser.getEmail().equals(userDTO.getEmail()) && userDAO.findByEmail(userDTO.getEmail()) != null) {
+        User userWithSameEmail = userDAO.findByEmail(userDTO.getEmail());
+        if (!existingUser.getEmail().equals(userDTO.getEmail()) &&
+                userWithSameEmail != null &&
+                userWithSameEmail.getUserId() != existingUser.getUserId()) {
             throw new EmailAlreadyExistsException("The email is already in use.");
         }
+
 
         existingUser.setUsername(userDTO.getUsername());
         existingUser.setEmail(userDTO.getEmail());
@@ -88,4 +91,9 @@ public class UserService {
 
         return userDAO.save(existingUser);
     }
+
+    public User findUserByEmail(String email) {
+        return userDAO.findByEmail(email);  // Assure-toi que la méthode findByEmail existe dans ton UserDAO
+    }
+
 }

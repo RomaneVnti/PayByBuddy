@@ -39,13 +39,14 @@ public class TransactionDAO {
      * @return La liste des transactions où l'utilisateur est impliqué (comme expéditeur ou destinataire).
      */
     public List<Transactions> findBySenderOrReceiver(User user) {
+        // Requête JPQL pour récupérer les transactions où l'utilisateur est soit l'expéditeur, soit le destinataire
         String jpql = "SELECT t FROM Transactions t WHERE t.sender = :user OR t.receiver = :user";
 
         // Création de la requête JPQL pour récupérer les transactions de l'utilisateur
-        return entityManager.createQuery(jpql, Transactions.class)
-                .setParameter("user", user)  // Ajout du paramètre 'user' dans la requête
-                .getResultList();  // Exécution de la requête et récupération des résultats
+        TypedQuery<Transactions> query = entityManager.createQuery(jpql, Transactions.class);
+        query.setParameter("user", user);  // Ajout du paramètre 'user' dans la requête
+
+        // Exécution de la requête et récupération des résultats
+        return query.getResultList();
     }
-
-
 }

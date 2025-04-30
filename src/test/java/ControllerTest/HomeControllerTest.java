@@ -1,7 +1,6 @@
 package com.paymybuddy.controller;
 
 import com.paymybuddy.security.JwtTokenProvider;
-import com.paymybuddy.controller.HomeController.ApiResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import org.junit.jupiter.api.BeforeEach;

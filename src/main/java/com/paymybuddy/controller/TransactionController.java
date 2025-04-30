@@ -44,7 +44,7 @@ public class TransactionController {
 
         try {
             // Extraire le token JWT de l'en-tête Authorization
-            String token = authorizationHeader.substring(7);
+            String token = authorizationHeader.substring(7);  // Enlever "Bearer "
             Claims claims = jwtTokenProvider.getClaimsFromToken(token);
             String currentUserEmail = claims.getSubject(); // Email de l'utilisateur authentifié
 
@@ -102,8 +102,6 @@ public class TransactionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Erreur lors de la récupération des transactions", null));
         }
     }
-
-
 
     /**
      * Classe représentant la requête pour créer une transaction.

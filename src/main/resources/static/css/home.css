@@ -1,0 +1,73 @@
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            color: black;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        nav a {
+            color: black;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .form-container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        #relationSelect, #descriptionInput, #amountInput {
+            padding: 8px;
+            font-size: 14px;
+        }
+        #descriptionInput {
+            width: 200px;
+        }
+        #amountInput {
+            width: 150px;
+        }
+        #payButton {
+            background-color: #f69f1e;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #payButton:hover {
+            background-color: #e3921a;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        /* Style pour afficher les erreurs */
+        .error-message {
+            color: red;
+            margin: 15px 0;
+            font-weight: bold;
+        }

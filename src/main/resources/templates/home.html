@@ -3,244 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>PayMyBuddy - Home</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        header {
-            color: black;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        nav a {
-            color: black;
-            text-decoration: none;
-            margin-left: 20px;
-            font-weight: bold;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        /* Ajout du style flexbox pour aligner les éléments */
-        .form-container {
-            display: flex;
-            gap: 20px; /* Espace entre les éléments */
-            align-items: center;
-        }
-        #relationSelect, #descriptionInput, #amountInput {
-            padding: 8px;
-            font-size: 14px;
-        }
-        #descriptionInput {
-            width: 200px; /* Ajuste la largeur selon tes préférences */
-        }
-        #amountInput {
-            width: 150px; /* Largeur pour le champ montant */
-        }
-        /* Style pour le bouton Payer */
-        #payButton {
-            background-color: #007bff; /* Bleu */
-            color: white;
-            padding: 10px 20px;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        #payButton:hover {
-            background-color: #0056b3; /* Bleu foncé au survol */
-        }
-        /* Style pour le tableau des transactions */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 30px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-    </style>
+    <link th:href="@{/css/home.css}" rel="stylesheet"/>
 </head>
 
-<script>
-    // Fonction pour récupérer un cookie par son nom
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(";").shift();
-        return null;
-    }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        // Récupérer les relations de l'utilisateur
-        fetch("/user/relations", {
-            method: "GET",
-            credentials: "include", // Pour inclure le cookie JWT dans la requête
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Erreur lors de la récupération des relations");
-            }
-            return response.json();
-        })
-        .then(data => {
-            const select = document.getElementById("relationSelect");
-            const relations = data.data;
-
-            relations.forEach(email => {
-                const option = document.createElement("option");
-                option.value = email;
-                option.textContent = email;
-                select.appendChild(option);
-            });
-        })
-        .catch(error => {
-            console.error("Erreur :", error);
-        });
-
-        // Ajouter l'événement au bouton "Payer"
-        const payButton = document.getElementById("payButton");
-
-        payButton.addEventListener("click", function () {
-            const senderEmail = "userEmail@example.com"; // Remplace par l'email de l'utilisateur connecté (via JWT)
-
-            const receiverEmail = document.getElementById("relationSelect").value; // Email de la relation sélectionnée
-            const description = document.getElementById("descriptionInput").value; // Description entrée
-            const amount = document.getElementById("amountInput").value; // Montant saisi
-
-            // Vérifie que tous les champs sont remplis
-            if (!receiverEmail || !description || !amount) {
-                alert("Veuillez remplir tous les champs.");
-                return;
-            }
-
-            // Créer le corps de la requête
-            const transactionData = {
-                senderEmail: senderEmail,
-                receiverEmail: receiverEmail,
-                description: description,
-                amount: parseFloat(amount),
-            };
-
-            // Récupérer le token JWT à partir du cookie
-            const token = getCookie("JWT"); // Utilisez le cookie JWT ici
-            if (!token) {
-                alert("Token JWT manquant ou invalide.");
-                return;
-            }
-            console.log("Token JWT:", token); // Vérifiez que le token est bien récupéré
-
-            // Envoi de la requête POST pour créer la transaction
-            fetch("http://localhost:8080/transaction", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + token // Ajoutez le token JWT récupéré du cookie
-                },
-                body: JSON.stringify(transactionData)
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Erreur lors de la création de la transaction");
-                }
-            })
-            .then(data => {
-                alert("Transaction créée avec succès !");
-                console.log(data);
-                loadTransactions(); // Recharger les transactions après la création
-            })
-            .catch(error => {
-                console.error("Erreur :", error);
-                alert("Une erreur est survenue lors de la création de la transaction.");
-            });
-        });
-
-        // Fonction pour charger les dernières transactions
-        function loadTransactions() {
-            const token = getCookie("JWT"); // Récupérer le token JWT
-            if (!token) {
-                alert("Token JWT manquant ou invalide.");
-                return;
-            }
-
-            fetch("http://localhost:8080/transaction", {
-                method: "GET",
-                headers: {
-                    "Authorization": "Bearer " + token
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Vérifie si la réponse contient le champ 'data' et 'transactions'
-                console.log(data); // Affiche la réponse dans la console pour déboguer
-                if (!data || !data.data || !data.data.transactions) {
-                    console.error("La réponse ne contient pas les transactions sous 'data.transactions'.");
-                    return;
-                }
-
-                const transactionsTable = document.getElementById("transactionsTableBody");
-                transactionsTable.innerHTML = ""; // Vider la table avant de la remplir
-                console.log(data.data.transactions);  // Affiche toutes les transactions
-
-                // Filtrer les transactions pour ne garder que celles où l'utilisateur est l'expéditeur
-                const userTransactions = data.data.transactions.filter(transaction => transaction.sender.email !== "userEmail@example.com");
-
-                userTransactions.forEach(transaction => {
-                    const row = document.createElement("tr");
-
-                    // Afficher le 'username' du receiver (destinataire)
-                    const relationCell = document.createElement("td");
-                    relationCell.textContent = transaction.receiver.username || "N/A";
-
-                    const descriptionCell = document.createElement("td");
-                    descriptionCell.textContent = transaction.description || "Aucune description"; // Gestion du cas où il n'y a pas de description
-
-                    const amountCell = document.createElement("td");
-                    amountCell.textContent = `${transaction.amount} €`;
-
-                    row.appendChild(relationCell);
-                    row.appendChild(descriptionCell);
-                    row.appendChild(amountCell);
-                    transactionsTable.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error("Erreur lors du chargement des transactions:", error);
-            });
-        }
-
-        // Charger les transactions à l'initialisation de la page
-        loadTransactions();
-    });
-</script>
 
 <body>
 
 <header>
-    <div class="logo">PayMyBuddy</div>
+    <div class="logo">Pay My Buddy</div>
     <nav>
-        <a th:href="@{/home}">Transférer</a> <!-- Redirige vers la page /home -->
-        <a th:href="@{/profil}">Profil</a><!-- Redirige vers la page /profil -->
-        <a th:href="@{/relations}">Ajouter une relation</a> <!-- Redirige vers la page /relations -->
-        <a th:href="@{/connection}">Se déconnecter</a> <!-- Redirige vers la page de déconnexion -->
+        <a th:href="@{/home}">Transférer</a>
+        <a th:href="@{/profil}">Profil</a>
+        <a th:href="@{/relations}">Ajouter une relation</a>
+        <a th:href="@{/connexion}">Se déconnecter</a>
     </nav>
-
 </header>
 
 <main style="padding: 30px;">
@@ -249,7 +26,6 @@
         <div>
             <label for="relationSelect">Choisissez une relation :</label>
             <select id="relationSelect">
-                <!-- Placeholder -->
                 <option value="" disabled selected>-- Sélectionnez un contact --</option>
             </select>
         </div>
@@ -264,9 +40,12 @@
         <div>
             <button id="payButton">Payer</button>
         </div>
+
+        <!-- Conteneur pour afficher les erreurs -->
+        <div id="errorContainer" class="error-message"></div>
+
     </div>
 
-    <!-- Tableau des dernières transactions -->
     <h2>Dernières transactions</h2>
     <table>
         <thead>
@@ -277,10 +56,10 @@
         </tr>
         </thead>
         <tbody id="transactionsTableBody">
-        <!-- Les lignes de transactions seront insérées ici par JavaScript -->
         </tbody>
     </table>
 </main>
+<script th:src="@{/js/home.js}"></script>
 
 </body>
 </html>

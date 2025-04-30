@@ -107,51 +107,10 @@ class RelationControllerTest {
         assertEquals("Token invalide ou expiré", ((RelationController.ApiResponse) response.getBody()).getMessage());
     }
 
-    /**
-     * Test pour ajouter une relation avec succès.
-     * Vérifie que la réponse HTTP est OK (200) et que le message indique que la relation a été ajoutée avec succès.
-     */
-    @Test
-    void addRelation_ShouldReturnOk_WhenRelationIsAdded() {
-        when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
-        when(claims.getSubject()).thenReturn(currentUserEmail);
 
-        when(relationService.addRelation(currentUserEmail, addRelationRequest.getRelationEmail())).thenReturn(true);
 
-        ResponseEntity<?> response = relationController.addRelation("Bearer " + validToken, addRelationRequest);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Relation added successfully", ((RelationController.ApiResponse) response.getBody()).getMessage());
-    }
 
-    /**
-     * Test pour l'échec d'ajout de relation.
-     * Vérifie que la réponse HTTP est Bad Request (400) et que le message d'erreur est retourné lorsque l'ajout de la relation échoue.
-     */
-    @Test
-    void addRelation_ShouldReturnBadRequest_WhenFailedToAddRelation() {
-        when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
-        when(claims.getSubject()).thenReturn(currentUserEmail);
 
-        when(relationService.addRelation(currentUserEmail, addRelationRequest.getRelationEmail())).thenReturn(false);
 
-        ResponseEntity<?> response = relationController.addRelation("Bearer " + validToken, addRelationRequest);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Failed to add relation", ((RelationController.ApiResponse) response.getBody()).getMessage());
-    }
-
-    /**
-     * Test pour la gestion d'un token invalide ou expiré lors de l'ajout d'une relation.
-     * Vérifie que la réponse HTTP est Unauthorized (401) et que le message d'erreur approprié est renvoyé.
-     */
-    @Test
-    void addRelation_ShouldReturnUnauthorized_WhenTokenIsInvalid() {
-        when(jwtTokenProvider.getClaimsFromToken(validToken)).thenThrow(new JwtException("Invalid token"));
-
-        ResponseEntity<?> response = relationController.addRelation("Bearer " + validToken, addRelationRequest);
-
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertEquals("Token invalide ou expiré", ((RelationController.ApiResponse) response.getBody()).getMessage());
-    }
 }

@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link th:href="@{/css/relations.css}" rel="stylesheet"/>
+
+
 </head>
 <body>
+<header>
+    <div class="logo">Pay My Buddy</div>
+    <nav>
+        <a th:href="@{/home}">Transférer</a>
+        <a th:href="@{/profil}">Profil</a>
+        <a th:href="@{/relations}">Ajouter une relation</a>
+        <a th:href="@{/connexion}">Se déconnecter</a>
+    </nav>
+</header>
+
+<main>
+    <form method="post" th:action="@{/user/relation/add}" class="add-relation-form" id="addRelationForm">
+        <input
+                type="email"
+                name="email"
+                placeholder="Saisissez l'adresse mail"
+                required
+                class="email-input"
+                id="emailInput"
+        />
+        <button type="submit" class="add-button">Ajouter</button>
+    </form>
+
+    <div id="errorContainer" class="error-message"></div> <!-- Conteneur pour les erreurs -->
+</main>
+
+<script th:src="@{/js/relations.js}"></script>
 
 </body>
 </html>

@@ -3,75 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Inscription</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+    <link th:href="@{/css/inscription.css}" rel="stylesheet"/>
 
-        .login-container {
-            background-color: #fff;
-            padding: 40px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            width: 300px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .logo-button {
-            background-color: #f4a826;
-            color: white;
-            font-weight: bold;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: default;
-            margin-bottom: 30px;
-        }
-
-        input[type="email"], input[type="password"], input[type="string"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .login-button {
-            background-color: #4285F4;
-            color: white;
-            font-weight: bold;
-            border: none;
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            width: 100%; /* Pour que le bouton soit de la même largeur que les champs input */
-        }
-
-        .login-button:hover {
-            background-color: #357ae8;
-        }
-    </style>
 </head>
 <body>
 
 <div class="login-container">
     <button class="logo-button">Pay My Buddy</button>
-    <form action="/api/user/create" method="POST">
-        <input type="string" name="username" placeholder="username" required />
+    <form id="signupForm">
+        <input type="string" name="username" placeholder="Username" required />
         <input type="email" name="email" placeholder="Mail" required />
         <input type="password" name="password" placeholder="Mot de passe" required />
         <button type="submit" class="login-button">Créer un compte</button>
     </form>
+    <div class="signin-link">
+        <p>Vous avez déjà un compte ? <a href="/connexion">Se connecter</a></p>
+    </div>
+
+    <!-- Conteneur d'erreur -->
+    <div id="errorContainer" class="error-message"></div>
 </div>
+
+<script th:src="@{/js/inscription.js}"></script>
+
 
 </body>
 </html>

@@ -1,153 +1,145 @@
 package com.paymybuddy.controller;
 
+import com.paymybuddy.model.User;
 import com.paymybuddy.security.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.stereotype.Controller;
-
+import com.paymybuddy.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * Contrôleur pour gérer l'affichage des pages du site (inscription, connexion, accueil, relations, transferts, profil)
+ */
 @Controller
 public class HomeController {
-
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private UserService userService;
+
     /**
-     * Route pour afficher la page d'inscription
-     * Cette route n'a pas besoin d'un token JWT car c'est une page d'inscription publique
+     * Route pour afficher la page d'inscription.
+     * Cette route est publique, aucun token JWT n'est nécessaire.
+     *
+     * @return La vue d'inscription
      */
     @GetMapping("/inscription")
     public String showInscriptionPage() {
-        // Si tu veux afficher la page d'inscription, tu renvoies la vue Thymeleaf
-        return "inscription";  // Assure-toi d'avoir un fichier inscription.html dans le dossier /src/main/resources/templates/
+        return "inscription";  // La vue Thymeleaf pour l'inscription
     }
 
     /**
-     * Route pour afficher la page de connection
-     * Cette route n'a pas besoin d'un token JWT car c'est une page de connection publique
+     * Route pour afficher la page de connexion.
+     * Cette route est publique, aucun token JWT n'est nécessaire.
+     *
+     * @return La vue de connexion
      */
-    @GetMapping("/connection")
-    public String showConnectionPage() {
-        return "connection";  // Assure-toi que le fichier connection.html existe dans /src/main/resources/templates/
+    @GetMapping("/connexion")
+    public String showConnexionPage() {
+        return "connexion";  // La vue Thymeleaf pour la connexion
     }
 
     /**
-     * Route pour afficher la page d'accueil (transactions)
-     * Cette route vérifie d'abord si l'utilisateur est authentifié via un token JWT
+     * Route pour afficher la page d'accueil (transactions).
+     * Cette route nécessite un token JWT pour vérifier l'authentification de l'utilisateur.
+     *
+     * @param jwtToken Le token JWT dans les cookies de l'utilisateur
+     * @return La vue d'accueil ou redirige vers la page de connexion si le token est invalide
      */
     @GetMapping("/home")
     public String showHomePage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
         if (jwtToken.isEmpty()) {
-            return "redirect:/connection";  // Si pas de token, rediriger vers la page de connexion
+            return "redirect:/connexion";  // Si pas de token, redirige vers la page de connexion
         }
 
         try {
             // Valider et extraire les informations du token JWT
             Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
-
-            // Utiliser les informations du token pour afficher la page d'accueil
-            String username = claims.getSubject();
-            return "home";  // Renvoie la vue home.html
+            return "home";  // La vue Thymeleaf pour la page d'accueil
         } catch (JwtException e) {
-            // Si le token est invalide ou expiré, redirige vers la connexion
-            return "redirect:/connection";
+            return "redirect:/connexion";  // Redirige si le token est invalide ou expiré
         }
     }
 
-
-
     /**
-     * Route pour afficher la page des relations
-     * Cette route vérifie d'abord si l'utilisateur est authentifié via un token JWT
+     * Route pour afficher la page des relations.
+     * Cette route nécessite un token JWT pour vérifier l'authentification de l'utilisateur.
+     *
+     * @param jwtToken Le token JWT dans les cookies de l'utilisateur
+     * @return La vue des relations ou redirige vers la page de connexion si le token est invalide
      */
     @GetMapping("/relations")
     public String showRelationPage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
         if (jwtToken.isEmpty()) {
-            return "redirect:/connection";  // Si pas de token, rediriger vers la page de connexion
+            return "redirect:/connexion";  // Si pas de token, redirige vers la page de connexion
         }
 
         try {
             // Valider et extraire les informations du token JWT
             Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
-
-            // Utiliser les informations du token pour afficher la page d'accueil
-            String username = claims.getSubject();
-            return "relations";  // Renvoie la vue home.html
+            return "relations";  // La vue Thymeleaf pour la page des relations
         } catch (JwtException e) {
-            // Si le token est invalide ou expiré, redirige vers la connexion
-            return "redirect:/connection";
+            return "redirect:/connexion";  // Redirige si le token est invalide ou expiré
         }
     }
 
     /**
-     * Route pour afficher la page des transferts
-     * Cette route vérifie d'abord si l'utilisateur est authentifié via un token JWT
+     * Route pour afficher la page des transferts.
+     * Cette route nécessite un token JWT pour vérifier l'authentification de l'utilisateur.
+     *
+     * @param jwtToken Le token JWT dans les cookies de l'utilisateur
+     * @return La vue des transferts ou redirige vers la page de connexion si le token est invalide
      */
     @GetMapping("/transfer")
     public String showTransferPage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
         if (jwtToken.isEmpty()) {
-            return "redirect:/connection";  // Si pas de token, rediriger vers la page de connexion
+            return "redirect:/connexion";  // Si pas de token, redirige vers la page de connexion
         }
 
         try {
             // Valider et extraire les informations du token JWT
             Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
-
-            // Utiliser les informations du token pour afficher la page d'accueil
-            String username = claims.getSubject();
-            return "transfer";  // Renvoie la vue home.html
+            return "transfer";  // La vue Thymeleaf pour la page des transferts
         } catch (JwtException e) {
-            // Si le token est invalide ou expiré, redirige vers la connexion
-            return "redirect:/connection";
+            return "redirect:/connexion";  // Redirige si le token est invalide ou expiré
         }
     }
 
     /**
-     * Route pour afficher la page du profil
-     * Cette route vérifie d'abord si l'utilisateur est authentifié via un token JWT
+     * Route pour afficher la page du profil.
+     * Cette route nécessite un token JWT pour vérifier l'authentification de l'utilisateur.
+     *
+     * @param jwtToken Le token JWT dans les cookies de l'utilisateur
+     * @param model Le modèle Thymeleaf pour passer les données à la vue
+     * @return La vue du profil ou redirige vers la page de connexion si le token est invalide
      */
     @GetMapping("/profil")
-    public String showProfilPage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
+    public String showProfilPage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken, Model model) {
         if (jwtToken.isEmpty()) {
-            return "redirect:/connection";  // Si pas de token, rediriger vers la page de connexion
+            return "redirect:/connexion";  // Si pas de token, redirige vers la page de connexion
         }
 
         try {
             // Valider et extraire les informations du token JWT
             Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
+            String email = claims.getSubject();  // Récupère l'email de l'utilisateur connecté
 
-            // Utiliser les informations du token pour afficher la page d'accueil
-            String username = claims.getSubject();
-            return "profil";  // Renvoie la vue home.html
+            // Récupérer l'utilisateur depuis le service en utilisant l'email
+            User user = userService.findUserByEmail(email);
+
+            // Ajouter les données de l'utilisateur au modèle
+            model.addAttribute("user", user);  // Passer l'objet User à la vue
+
+            return "profil";  // La vue Thymeleaf pour le profil
         } catch (JwtException e) {
-            // Si le token est invalide ou expiré, redirige vers la connexion
-            return "redirect:/connection";
+            return "redirect:/connexion";  // Redirige si le token est invalide ou expiré
         }
     }
 
-    // Classe pour structurer la réponse JSON
-    public static class ApiResponse {
-        private String message;
-        private String data;
-
-        public ApiResponse(String message, String data) {
-            this.message = message;
-            this.data = data;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public String getData() {
-            return data;
-        }
-    }
 }

@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Profil</title>
+    <link th:href="@{/css/profil.css}" rel="stylesheet"/>
+
 </head>
+
 <body>
+<header>
+    <div class="logo">Pay My Buddy</div>
+    <nav>
+        <a th:href="@{/home}">Transférer</a>
+        <a th:href="@{/profil}">Profil</a>
+        <a th:href="@{/relations}">Ajouter une relation</a>
+        <a th:href="@{/connexion}">Se déconnecter</a>
+    </nav>
+</header>
+
+<main>
+    <form id="updateProfileForm">
+        <table>
+            <tr>
+                <th>Username</th>
+                <td><input type="text" name="username" id="username" th:value="${user.username}" required /></td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td><input type="email" name="email" id="email" th:value="${user.email}" required /></td>
+            </tr>
+            <tr>
+                <th>Mot de passe</th>
+                <td><input type="password" name="password" id="password" placeholder="***********" required /></td>
+            </tr>
+        </table>
+
+        <!-- Bouton pour soumettre les modifications -->
+        <button type="submit" class="btn-modifier">Modifier</button>
+    </form>
+
+    <div id="errorContainer" class="error-message"></div> <!-- Conteneur pour les erreurs -->
+</main>
+
+<script th:src="@{/js/profil.js}"></script>
+
 
 </body>
 </html>

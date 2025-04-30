@@ -20,8 +20,8 @@ public class UserDAO {
     /**
      * Recherche un utilisateur par son adresse email.
      *
-     * @param email l'adresse email à rechercher
-     * @return l'utilisateur correspondant à l'email ou null si aucun utilisateur n'est trouvé
+     * @param email l'adresse email à rechercher.
+     * @return l'utilisateur correspondant à l'email ou null si aucun utilisateur n'est trouvé.
      */
     public User findByEmail(String email) {
         try {
@@ -41,8 +41,8 @@ public class UserDAO {
     /**
      * Recherche un utilisateur par son nom d'utilisateur.
      *
-     * @param username le nom d'utilisateur à rechercher
-     * @return l'utilisateur correspondant au nom d'utilisateur ou null si aucun utilisateur n'est trouvé
+     * @param username le nom d'utilisateur à rechercher.
+     * @return l'utilisateur correspondant au nom d'utilisateur ou null si aucun utilisateur n'est trouvé.
      */
     public User findByUsername(String username) {
         try {
@@ -62,9 +62,9 @@ public class UserDAO {
     /**
      * Sauvegarde un utilisateur dans la base de données.
      *
-     * @param user l'objet utilisateur à persister
-     * @return l'utilisateur persisté avec son identifiant généré
-     * @throws RuntimeException si une erreur survient lors de la persistance
+     * @param user l'objet utilisateur à persister.
+     * @return l'utilisateur persisté avec son identifiant généré.
+     * @throws RuntimeException si une erreur survient lors de la persistance.
      */
     public User save(User user) {
         try {
@@ -83,9 +83,9 @@ public class UserDAO {
     /**
      * Met à jour un utilisateur existant dans la base de données.
      *
-     * @param user l'utilisateur avec les informations mises à jour
-     * @return l'utilisateur mis à jour
-     * @throws RuntimeException si une erreur survient lors de la mise à jour
+     * @param user l'utilisateur avec les informations mises à jour.
+     * @return l'utilisateur mis à jour.
+     * @throws RuntimeException si une erreur survient lors de la mise à jour.
      */
     public User update(User user) {
         try {
