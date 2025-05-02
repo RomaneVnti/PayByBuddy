@@ -1,94 +1,114 @@
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-    }
-    header {
-        color: black;
-        padding: 15px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .logo {
-        font-size: 24px;
-        font-weight: bold;
-    }
-    nav a {
-        color: black;
-        text-decoration: none;
-        margin-left: 20px;
-        font-weight: bold;
-    }
-    nav a:hover {
-        text-decoration: underline;
-    }
-    .form-container {
-        display: flex;
-        gap: 20px;
-        align-items: center;
-    }
+/* Styles généraux */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
 
-    main {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
+/* Header */
+header {
+    color: black;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    table {
-        width: 60%;
-        border-collapse: collapse;
-        background-color: #f9f9f9;
-    }
+/* Logo */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
 
-    th, td {
-        padding: 12px 20px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
+/* Liens de navigation */
+nav a {
+    color: black;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+}
 
-    th {
-        background-color: #f2f2f2;
-    }
+/* Effet au survol des liens de navigation */
+nav a:hover {
+    text-decoration: underline;
+}
 
-    td {
-        background-color: #ffffff;
-    }
+/* Conteneur de formulaire */
+.form-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
 
-    input[type="text"], input[type="email"], input[type="password"] {
-        padding: 10px;
-        font-size: 16px;
-        border: none;
-        box-sizing: border-box;
-    }
+/* Zone principale */
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
-        outline: none;
-        background-color: #ffffff;
-    }
+/* Tableaux */
+table {
+    width: 60%;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+}
 
-    .btn-modifier {
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #f69f1e;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
+/* Cellules du tableau */
+th, td {
+    padding: 12px 20px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
 
-    .btn-modifier:hover {
-        background-color: #e3921a;
-    }
+/* En-têtes de table */
+th {
+    background-color: #f2f2f2;
+}
 
-    /* Style pour afficher les erreurs */
-    .error-message {
-        color: red;
-        margin: 15px 0;
-        font-weight: bold;
-    }
+/* Lignes de données */
+td {
+    background-color: #ffffff;
+}
+
+/* Champs de saisie */
+input[type="text"], input[type="email"], input[type="password"] {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    box-sizing: border-box;
+}
+
+/* Effet de focus sur les champs de saisie */
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    outline: none;
+    background-color: #ffffff;
+}
+
+/* Bouton de modification */
+.btn-modifier {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f69f1e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Effet au survol du bouton de modification */
+.btn-modifier:hover {
+    background-color: #e3921a;
+}
+
+/* Style pour afficher les erreurs */
+.error-message {
+    color: red;
+    margin: 15px 0;
+    font-weight: bold;
+}

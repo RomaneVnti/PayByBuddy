@@ -5,11 +5,11 @@ spring.datasource.password=ton_mot_de_passe
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 # --- JWT ---
-jwt.secret=ton_token
+jwt.secret=test
 jwt.expiration-ms=3600000  # Token valide pendant 1 heure (en millisecondes)
 
 # --- JPA CONFIG ---
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+spring.jpa.show-sql=false
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 

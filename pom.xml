@@ -149,21 +149,37 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.11</version>
                 <executions>
+                    <!-- Prépare l'agent JaCoCo -->
                     <execution>
                         <id>default-prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+
+                    <!-- Génère le rapport HTML après les tests -->
                     <execution>
                         <id>default-report</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+                            <excludes>
+                                <!-- Exclure les packages non souhaités -->
+                                <exclude>com/paymybuddy/dao/**</exclude>
+                                <exclude>com/paymybuddy/model/**</exclude>
+                                <exclude>com/paymybuddy/dto/**</exclude>
+                                <exclude>com/paymybuddy/util/**</exclude>
+                                <exclude>com/paymybuddy/config/**</exclude>
+                                <exclude>com/paymybuddy/exception/**</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 </project>

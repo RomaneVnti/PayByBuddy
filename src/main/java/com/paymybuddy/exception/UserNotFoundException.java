@@ -3,7 +3,6 @@ package com.paymybuddy.exception;
 /**
  * Exception personnalisée levée lorsqu'un utilisateur n'est pas trouvé
  * dans la base de données lors d'une opération (ex : recherche, connexion, relation, etc.).
- *
  * Cette exception est utilisée pour signaler l'absence d'un utilisateur correspondant
  * aux critères fournis (email, identifiant, etc.).
  */

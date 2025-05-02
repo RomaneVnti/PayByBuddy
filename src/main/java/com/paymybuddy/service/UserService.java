@@ -27,7 +27,7 @@ public class UserService {
      *
      * @param userDAO DAO permettant d'accéder aux données des utilisateurs
      */
-    @Autowired
+
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
         this.passwordEncoder = new BCryptPasswordEncoder();
@@ -45,7 +45,7 @@ public class UserService {
     @Transactional
     public User createUser(String username, String email, String password) {
         if (userDAO.findByEmail(email) != null) {
-            throw new EmailAlreadyExistsException("An account with this email already exists.");
+            throw new EmailAlreadyExistsException("Un compte avec cet email existe déjà.");
         }
 
         String hashedPassword = passwordEncoder.encode(password);
@@ -72,13 +72,13 @@ public class UserService {
     public User updateUser(String currentUserEmail, UserDTO userDTO) {
         User existingUser = userDAO.findByEmail(currentUserEmail);
         if (existingUser == null) {
-            throw new UserNotFoundException("User not found.");
+            throw new UserNotFoundException("Utilisateur non trouvé.");
         }
         User userWithSameEmail = userDAO.findByEmail(userDTO.getEmail());
         if (!existingUser.getEmail().equals(userDTO.getEmail()) &&
                 userWithSameEmail != null &&
                 userWithSameEmail.getUserId() != existingUser.getUserId()) {
-            throw new EmailAlreadyExistsException("The email is already in use.");
+            throw new EmailAlreadyExistsException("L'email est déjà utilisé.");
         }
 
 
@@ -93,7 +93,7 @@ public class UserService {
     }
 
     public User findUserByEmail(String email) {
-        return userDAO.findByEmail(email);  // Assure-toi que la méthode findByEmail existe dans ton UserDAO
+        return userDAO.findByEmail(email);
     }
 
 }

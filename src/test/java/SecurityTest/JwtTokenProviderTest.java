@@ -17,23 +17,31 @@ import java.util.Date;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test unitaire pour le {@link JwtTokenProvider}.
+ * Utilise Mockito pour simuler l'utilisateur et tester les comportements liés à la gestion des tokens JWT.
+ */
 @ExtendWith(MockitoExtension.class)
 public class JwtTokenProviderTest {
 
     @Mock
-    private User user;  // Mock de l'utilisateur
+    private User user;
 
     @InjectMocks
-    private JwtTokenProvider jwtTokenProvider;  // Injection de la dépendance dans JwtTokenProvider
+    private JwtTokenProvider jwtTokenProvider;
 
     private String token;
 
+    /**
+     * Méthode exécutée avant chaque test pour initialiser les objets nécessaires.
+     * Elle crée un utilisateur mocké et génère un token pour les tests.
+     */
     @BeforeEach
     void setUp() {
         user = mock(User.class);
-        when(user.getEmail()).thenReturn("testuser@example.com");  // Mock de l'email de l'utilisateur
+        when(user.getEmail()).thenReturn("testuser@example.com");
 
-        token = jwtTokenProvider.generateToken(user);  // Génération d'un token pour les tests
+        token = jwtTokenProvider.generateToken(user);
     }
 
     /**
@@ -87,7 +95,6 @@ public class JwtTokenProviderTest {
         assertTrue(isValid);
     }
 
-
     /**
      * Test pour la gestion des erreurs lors de la récupération des claims d'un token invalide.
      * Vérifie que l'exception est levée si le token est invalide.
@@ -102,7 +109,12 @@ public class JwtTokenProviderTest {
         });
     }
 
-    // Helper method to mock an expired token
+    /**
+     * Méthode utilitaire pour créer un token expiré.
+     * Cette méthode génère un token avec une expiration dans le passé pour tester les scénarios d'expiration.
+     *
+     * @return un token expiré
+     */
     private String mockExpiredToken() {
         long expiredValidity = -3600000; // Expiration dans le passé (1 heure avant)
         Date now = new Date();

@@ -2,20 +2,18 @@ package com.paymybuddy.controller;
 
 import com.paymybuddy.security.JwtTokenProvider;
 import com.paymybuddy.service.RelationService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-
 import java.util.List;
 
 /**
  * Contrôleur pour gérer les relations entre utilisateurs.
- * Ce contrôleur permet d'afficher les relations d'un utilisateur, d'ajouter des relations, etc.
  */
 @Controller
 public class RelationController {
@@ -27,8 +25,7 @@ public class RelationController {
     private RelationService relationService;
 
     /**
-     * Route pour afficher la liste des relations de l'utilisateur connecté.
-     * Cette méthode vérifie d'abord la présence d'un token JWT, puis récupère et affiche les relations.
+     * Affiche la liste des relations de l'utilisateur connecté.
      *
      * @param jwtToken Le token JWT envoyé par le client
      * @return La réponse contenant les relations de l'utilisateur ou un message d'erreur
@@ -43,12 +40,7 @@ public class RelationController {
             Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
             String username = claims.getSubject();
 
-            // Récupérer les relations de l'utilisateur
             List<String> relations = relationService.getUserRelations(username);
-
-            if (relations.isEmpty()) {
-                return ResponseEntity.ok().body(new ApiResponse("Aucune relation trouvée", null));
-            }
 
             return ResponseEntity.ok().body(new ApiResponse("Relations récupérées avec succès", relations));
 
@@ -58,12 +50,11 @@ public class RelationController {
     }
 
     /**
-     * Route pour ajouter une relation à l'utilisateur connecté via l'email de la relation.
-     * Cette méthode est appelée lors de l'envoi du formulaire HTML pour ajouter une relation.
+     * Ajoute une relation à l'utilisateur connecté via l'email de la relation.
      *
-     * @param jwtToken        Le token JWT de l'utilisateur
-     * @param relationEmail   L'email de la relation à ajouter
-     * @param model           Le modèle pour afficher les messages dans la vue
+     * @param jwtToken      Le token JWT de l'utilisateur
+     * @param relationEmail L'email de la relation à ajouter
+     * @param model         Le modèle pour afficher les messages dans la vue
      * @return La vue de la page des relations avec un message de succès ou d'erreur
      */
     @PostMapping("/user/relation/add")
@@ -71,15 +62,13 @@ public class RelationController {
                               @RequestParam("email") String relationEmail,
                               Model model) {
         if (jwtToken.isEmpty()) {
-            return "redirect:/connexion";  // Si pas de token, rediriger vers la page de connexion
+            return "redirect:/connexion";
         }
 
         try {
-            // Extraire l'email de l'utilisateur actuel à partir du JWT
             Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
             String currentUserEmail = claims.getSubject();
 
-            // Tenter d'ajouter la relation
             boolean success = relationService.addRelation(currentUserEmail, relationEmail);
 
             if (success) {
@@ -88,19 +77,18 @@ public class RelationController {
                 model.addAttribute("message", "Échec de l'ajout de la relation (elle existe peut-être déjà).");
             }
 
-            return "relations";  // Reviens sur la même page avec un message
+            return "relations";
 
         } catch (JwtException e) {
-            return "redirect:/connexion";  // Token invalide, rediriger vers la connexion
+            return "redirect:/connexion";
         } catch (Exception e) {
             model.addAttribute("message", "Une erreur est survenue : " + e.getMessage());
-            return "relations";  // Retourner à la page des relations avec le message d'erreur
+            return "relations";
         }
     }
 
     /**
-     * Classe pour structurer la réponse API.
-     * Cette classe est utilisée pour envoyer un message et des données dans les réponses HTTP.
+     * Structure de réponse API contenant un message et des données.
      */
     public static class ApiResponse {
         private String message;
@@ -121,8 +109,7 @@ public class RelationController {
     }
 
     /**
-     * Classe pour structurer la demande d'ajout d'une relation.
-     * Utilisée pour le traitement des données d'email dans le formulaire d'ajout de relation.
+     * Représente une requête d'ajout de relation.
      */
     public static class AddRelationRequest {
         private String relationEmail;

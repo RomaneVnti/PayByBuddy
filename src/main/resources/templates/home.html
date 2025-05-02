@@ -25,17 +25,17 @@
     <div class="form-container">
         <div>
             <label for="relationSelect">Choisissez une relation :</label>
-            <select id="relationSelect">
+            <select id="relationSelect" required>
                 <option value="" disabled selected>-- Sélectionnez un contact --</option>
             </select>
         </div>
         <div>
             <label for="descriptionInput">Description :</label>
-            <input type="text" id="descriptionInput" placeholder="Entrez une description">
+            <input type="text" id="descriptionInput" placeholder="Entrez une description" required>
         </div>
         <div>
             <label for="amountInput">Montant :</label>
-            <input type="number" id="amountInput" placeholder="Montant de la transaction" step="0.01">
+            <input type="number" id="amountInput" placeholder="Montant de la transaction" step="0.01" required>
         </div>
         <div>
             <button id="payButton">Payer</button>

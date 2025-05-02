@@ -43,18 +43,15 @@ public class LoginService {
      * @throws InvalidLoginException si l'email n'existe pas ou si le mot de passe est incorrect
      */
     public String authenticate(String email, String password) {
-        // Recherche de l'utilisateur par email
         User user = userDAO.findByEmail(email);
         if (user == null) {
-            throw new InvalidLoginException("Invalid email or password");
+            throw new InvalidLoginException("Email ou mot de passe invalide");
         }
 
-        // Vérification du mot de passe
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new InvalidLoginException("Invalid email or password");
+            throw new InvalidLoginException("Email ou mot de passe invalide");
         }
 
-        // Authentification réussie : génération du token JWT
         return jwtTokenProvider.generateToken(user);
     }
 }

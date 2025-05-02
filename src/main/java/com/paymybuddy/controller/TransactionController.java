@@ -16,7 +16,6 @@ import java.util.Collections;
 
 /**
  * Contrôleur pour gérer les transactions des utilisateurs.
- * Fournit des API pour créer et récupérer des transactions.
  */
 @RestController
 @RequestMapping("/transaction")
@@ -29,13 +28,7 @@ public class TransactionController {
     private JwtTokenProvider jwtTokenProvider;
 
     /**
-     * Route pour créer une transaction.
-     * Cette méthode permet à un utilisateur de créer une nouvelle transaction en spécifiant le destinataire,
-     * la description et le montant.
-     *
-     * @param authorizationHeader Le token JWT dans l'en-tête Authorization.
-     * @param transactionRequest Contient les informations nécessaires pour créer la transaction.
-     * @return ResponseEntity contenant la transaction créée ou un message d'erreur.
+     * Crée une transaction entre l'utilisateur connecté et un destinataire.
      */
     @PostMapping
     public ResponseEntity<?> createTransaction(
@@ -43,12 +36,10 @@ public class TransactionController {
             @RequestBody TransactionRequest transactionRequest) {
 
         try {
-            // Extraire le token JWT de l'en-tête Authorization
-            String token = authorizationHeader.substring(7);  // Enlever "Bearer "
+            String token = authorizationHeader.substring(7);
             Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-            String currentUserEmail = claims.getSubject(); // Email de l'utilisateur authentifié
+            String currentUserEmail = claims.getSubject();
 
-            // Créer la transaction en utilisant les informations envoyées dans le corps de la requête
             Transactions transaction = transactionService.addTransaction(
                     currentUserEmail,
                     transactionRequest.getReceiverEmail(),
@@ -56,56 +47,49 @@ public class TransactionController {
                     transactionRequest.getAmount()
             );
 
-            // Retourner une réponse avec le statut CREATED et la transaction
             return new ResponseEntity<>(transaction, HttpStatus.CREATED);
 
         } catch (JwtException e) {
-            // Si le token est invalide ou expiré, retournez une erreur 401 Unauthorized
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("Token invalide ou expiré", null));
-        } catch (EmailNotFoundException e) {
-            // Gérer l'exception EmailNotFoundException
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), null));
-        } catch (InvalidAmountException e) {
-            // Gérer l'exception InvalidAmountException
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), null));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse("Token invalide ou expiré", null));
+        } catch (EmailNotFoundException | InvalidAmountException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse(e.getMessage(), null));
         } catch (Exception e) {
-            // Si une autre erreur survient, retournez une erreur 400 Bad Request
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Erreur lors de la création de la transaction", null));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse("Erreur lors de la création de la transaction", null));
         }
     }
 
     /**
-     * Route pour récupérer toutes les transactions de l'utilisateur connecté.
-     * Cette méthode récupère toutes les transactions associées à l'utilisateur authentifié.
-     *
-     * @param authorizationHeader Le token JWT dans l'en-tête Authorization.
-     * @return ResponseEntity contenant les transactions de l'utilisateur ou un message d'erreur.
+     * Récupère toutes les transactions de l'utilisateur connecté.
      */
     @GetMapping
     public ResponseEntity<?> getUserTransactions(@RequestHeader("Authorization") String authorizationHeader) {
         try {
-            // Extraction du token JWT de l'en-tête Authorization
-            String token = authorizationHeader.substring(7); // On enlève "Bearer "
+            String token = authorizationHeader.substring(7);
             Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-            String currentUserEmail = claims.getSubject(); // Email de l'utilisateur connecté
+            String currentUserEmail = claims.getSubject();
 
-            // Appel au service pour récupérer les transactions
             var transactions = transactionService.getUserTransactions(currentUserEmail);
 
-            // Retourner les transactions dans le champ "transactions" sous "data"
-            return ResponseEntity.ok().body(Collections.singletonMap("data", Collections.singletonMap("transactions", transactions)));
+            return ResponseEntity.ok()
+                    .body(Collections.singletonMap("data", Collections.singletonMap("transactions", transactions)));
+
         } catch (JwtException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("Token invalide ou expiré", null));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse("Token invalide ou expiré", null));
         } catch (EmailNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage(), null));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse(e.getMessage(), null));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Erreur lors de la récupération des transactions", null));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse("Erreur lors de la récupération des transactions", null));
         }
     }
 
     /**
-     * Classe représentant la requête pour créer une transaction.
-     * Contient les informations nécessaires à la création d'une transaction.
+     * Représente une requête de création de transaction.
      */
     public static class TransactionRequest {
         private String receiverEmail;
@@ -138,8 +122,7 @@ public class TransactionController {
     }
 
     /**
-     * Classe représentant la réponse de l'API.
-     * Contient un message et des données supplémentaires.
+     * Réponse standard de l'API.
      */
     public static class ApiResponse {
         private String message;

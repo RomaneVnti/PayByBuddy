@@ -1,4 +1,4 @@
-
+/* Styles généraux */
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f8f8;
@@ -8,6 +8,7 @@ body {
     height: 100vh;
 }
 
+/* Conteneur de connexion */
 .login-container {
     background-color: #fff;
     padding: 40px;
@@ -20,6 +21,7 @@ body {
     align-items: center;
 }
 
+/* Bouton du logo */
 .logo-button {
     background-color: #f4a826;
     color: white;
@@ -31,6 +33,7 @@ body {
     margin-bottom: 30px;
 }
 
+/* Champs de saisie */
 input[type="email"], input[type="password"], input[type="string"] {
     width: 100%;
     padding: 10px;
@@ -41,6 +44,7 @@ input[type="email"], input[type="password"], input[type="string"] {
     box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
 }
 
+/* Bouton de connexion */
 .login-button {
     background-color: #4285F4;
     color: white;
@@ -52,16 +56,19 @@ input[type="email"], input[type="password"], input[type="string"] {
     width: 100%;
 }
 
+/* Hover sur le bouton de connexion */
 .login-button:hover {
     background-color: #357ae8;
 }
 
+/* Message d'erreur */
 .error-message {
     color: red;
     font-size: 14px;
     margin-top: 10px;
 }
 
+/* Lien de connexion */
 .signin-link {
     margin-top: 15px;
     text-align: center;
@@ -73,6 +80,7 @@ input[type="email"], input[type="password"], input[type="string"] {
     font-weight: bold;
 }
 
+/* Hover sur le lien de connexion */
 .signin-link a:hover {
     text-decoration: underline;
 }

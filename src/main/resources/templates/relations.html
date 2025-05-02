@@ -30,8 +30,12 @@
         />
         <button type="submit" class="add-button">Ajouter</button>
     </form>
+    <div th:if="${message}" class="message-container">
+        <p th:text="${message}"></p>
+    </div>
 
-    <div id="errorContainer" class="error-message"></div> <!-- Conteneur pour les erreurs -->
+
+
 </main>
 
 <script th:src="@{/js/relations.js}"></script>

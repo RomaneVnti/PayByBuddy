@@ -5,22 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fb5faf1-2af7-49b1-820d-8f54738d1560" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties.example" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db/MPD_PayMyBuddy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/connexion.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/home.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/inscription.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/profil.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/relations.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/connexion.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/home.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/inscription.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/profil.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/relations.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/connexion.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/PayMyBuddyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/PayMyBuddyApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/HomeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/controller/LoginController.java" afterDir="false" />
@@ -30,17 +18,45 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/TransactionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/TransactionDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/UserDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/UserRelationsDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dao/UserRelationsDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dto/LoginDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dto/LoginDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/dto/UserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/EmailAlreadyExistsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/EmailAlreadyExistsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/InvalidAmountException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/InvalidAmountException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/UserNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/UserNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/Transactions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/Transactions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/UserRelations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/UserRelations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/security/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/security/JwtTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/LoginService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/RelationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/RelationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties.example" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/db/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/connection.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/connexion.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/connexion.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/inscription.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/inscription.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/profil.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/profil.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/relations.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/relations.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/connexion.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/connexion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/inscription.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/inscription.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/profil.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/profil.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/relations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/relations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/connexion.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/connexion.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inscription.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inscription.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/profil.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/profil.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/relations.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/relations.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ControllerTest/HomeControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/HomeControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ControllerTest/LoginControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/LoginControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ControllerTest/RelationControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/RelationControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ControllerTest/TransactionControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/TransactionControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ControllerTest/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ControllerTest/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/SecurityTest/JwtTokenProviderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/SecurityTest/JwtTokenProviderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ServiceTest/LoginServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ServiceTest/LoginServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ServiceTest/RelationServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ServiceTest/RelationServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ServiceTest/TransactionServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ServiceTest/TransactionServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ServiceTest/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ServiceTest/UserServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +76,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -81,6 +100,7 @@
     "JUnit.UserServiceTest.updateUser_ShouldUpdateUser_WhenValidEmailAndPasswordProvided.executor": "Run",
     "Maven.Run.executor": "Run",
     "Maven.Stop.executor": "Run",
+    "Maven.Test Surefire.executor": "Run",
     "Maven.Test.executor": "Run",
     "Maven.clean et install.executor": "Run",
     "Maven.dependances.executor": "Run",
@@ -100,7 +120,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources/static" />
     </key>
   </component>
-  <component name="RunManager" selected="Maven.Run">
+  <component name="RunManager" selected="Maven.Test">
     <configuration name="RelationControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PayMyBuddy" />
       <extension name="coverage">
@@ -224,7 +244,7 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
-    <configuration name="Test" type="MavenRunConfiguration" factoryName="Maven">
+    <configuration name="Test Surefire" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
         <option name="myRunnerSettings" />
@@ -238,7 +258,7 @@
               <list>
                 <option value="clean" />
                 <option value="test" />
-                <option value="verify" />
+                <option value="site" />
               </list>
             </option>
             <option name="multimoduleDir" />
@@ -256,7 +276,7 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
-    <configuration name="clean et install" type="MavenRunConfiguration" factoryName="Maven">
+    <configuration name="Test" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
         <option name="myRunnerSettings" />
@@ -269,7 +289,8 @@
             <option name="goals">
               <list>
                 <option value="clean" />
-                <option value="install" />
+                <option value="test" />
+                <option value="verify" />
               </list>
             </option>
             <option name="multimoduleDir" />
@@ -357,7 +378,7 @@
       <item itemvalue="Maven.Run" />
       <item itemvalue="Maven.Test" />
       <item itemvalue="Maven.update" />
-      <item itemvalue="Maven.clean et install" />
+      <item itemvalue="Maven.Test Surefire" />
       <item itemvalue="Maven.dependances" />
       <item itemvalue="Maven.Stop" />
     </list>
@@ -369,13 +390,6 @@
         <item itemvalue="JUnit.UserServiceTest.updateUser_ShouldUpdateUser_WhenValidEmailAndPasswordProvided" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-322ed176" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

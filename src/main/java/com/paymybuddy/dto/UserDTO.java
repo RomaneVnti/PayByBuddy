@@ -13,28 +13,28 @@ public class UserDTO {
 
     /**
      * Nom d'utilisateur.
-     * Ne peut pas être vide ou null.
+     * Ne peut pas être vide ou nul.
      */
-    @NotBlank(message = "Username is required")
+    @NotBlank(message = "Le nom d'utilisateur est requis")
     private String username;
 
     /**
      * Adresse email de l'utilisateur.
-     * Doit être une adresse email valide et ne peut pas être vide ou null.
+     * Doit être une adresse email valide et ne peut pas être vide ou nulle.
      */
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
+    @NotBlank(message = "L'email est requis")
+    @Email(message = "Format de l'email invalide")
     private String email;
 
     /**
      * Mot de passe de l'utilisateur.
      * Doit contenir au moins 8 caractères et ne pas contenir d'espaces.
      */
-    @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @NotBlank(message = "Le mot de passe est requis")
+    @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères")
     @Pattern(
             regexp = "^[^\\s]+$",
-            message = "Password is not valid: it must not contain spaces"
+            message = "Le mot de passe n'est pas valide : il ne doit pas contenir d'espaces"
     )
     private String password;
 

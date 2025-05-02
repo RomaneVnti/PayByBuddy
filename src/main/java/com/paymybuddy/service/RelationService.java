@@ -44,7 +44,6 @@ public class RelationService {
         List<String> relationsEmails = new ArrayList<>();
 
         for (UserRelations relation : userRelationsList) {
-            // Ajoute l'email de l'autre utilisateur dans la relation
             if (relation.getUser1().getUserId() == user.getUserId()) {
                 relationsEmails.add(relation.getUser2().getEmail());
             } else {
@@ -81,12 +80,10 @@ public class RelationService {
             throw new EmailNotFoundException("L'adresse email de l'utilisateur n'existe pas.");
         }
 
-        // Vérifie si la relation existe déjà
         if (userRelationsDAO.findRelationByIds(user.getUserId(), relationUser.getUserId()) != null) {
             throw new RuntimeException("Cette relation existe déjà.");
         }
 
-        // Crée et enregistre la nouvelle relation
         UserRelations userRelations = new UserRelations();
         userRelations.setUser1(user);
         userRelations.setUser2(relationUser);

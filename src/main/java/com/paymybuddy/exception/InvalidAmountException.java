@@ -3,7 +3,6 @@ package com.paymybuddy.exception;
 /**
  * Exception personnalisée levée lorsqu'un montant invalide est fourni
  * dans le cadre d'une transaction ou d'une opération financière.
- *
  * Cette exception peut être utilisée pour signaler, par exemple, un montant
  * nul, négatif ou non conforme aux règles métier de l'application.
  */

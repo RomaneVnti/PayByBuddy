@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Contrôleur pour gérer l'affichage des pages du site (inscription, connexion, accueil, relations, transferts, profil)
+ * Contrôleur principal gérant les routes des pages de l'application Web.
+ *
+ * Les routes protégées nécessitent la présence d'un token JWT valide dans les cookies.
+ * En cas d'absence ou d'invalidité du token, l'utilisateur est redirigé vers la page de connexion.
  */
 @Controller
 public class HomeController {
@@ -24,122 +27,107 @@ public class HomeController {
     private UserService userService;
 
     /**
-     * Route pour afficher la page d'inscription.
-     * Cette route est publique, aucun token JWT n'est nécessaire.
+     * Affiche la page d'inscription.
      *
-     * @return La vue d'inscription
+     * @return le nom de la vue "inscription"
      */
     @GetMapping("/inscription")
     public String showInscriptionPage() {
-        return "inscription";  // La vue Thymeleaf pour l'inscription
+        return "inscription";
     }
 
     /**
-     * Route pour afficher la page de connexion.
-     * Cette route est publique, aucun token JWT n'est nécessaire.
+     * Affiche la page de connexion.
      *
-     * @return La vue de connexion
+     * @return le nom de la vue "connexion"
      */
     @GetMapping("/connexion")
     public String showConnexionPage() {
-        return "connexion";  // La vue Thymeleaf pour la connexion
+        return "connexion";
     }
 
     /**
-     * Route pour afficher la page d'accueil (transactions).
-     * Cette route nécessite un token JWT pour vérifier l'authentification de l'utilisateur.
+     * Affiche la page d'accueil (home) si l'utilisateur possède un token JWT valide.
      *
-     * @param jwtToken Le token JWT dans les cookies de l'utilisateur
-     * @return La vue d'accueil ou redirige vers la page de connexion si le token est invalide
+     * @param jwtToken le token JWT récupéré depuis les cookies
+     * @return le nom de la vue "home" ou une redirection vers "/connexion" si le token est absent ou invalide
      */
     @GetMapping("/home")
     public String showHomePage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
         if (jwtToken.isEmpty()) {
-            return "redirect:/connexion";  // Si pas de token, redirige vers la page de connexion
+            return "redirect:/connexion";
         }
 
         try {
-            // Valider et extraire les informations du token JWT
-            Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
-            return "home";  // La vue Thymeleaf pour la page d'accueil
+            jwtTokenProvider.getClaimsFromToken(jwtToken);
+            return "home";
         } catch (JwtException e) {
-            return "redirect:/connexion";  // Redirige si le token est invalide ou expiré
+            return "redirect:/connexion";
         }
     }
 
     /**
-     * Route pour afficher la page des relations.
-     * Cette route nécessite un token JWT pour vérifier l'authentification de l'utilisateur.
+     * Affiche la page des relations de l'utilisateur si le token JWT est valide.
      *
-     * @param jwtToken Le token JWT dans les cookies de l'utilisateur
-     * @return La vue des relations ou redirige vers la page de connexion si le token est invalide
+     * @param jwtToken le token JWT récupéré depuis les cookies
+     * @return le nom de la vue "relations" ou une redirection vers "/connexion" si le token est absent ou invalide
      */
     @GetMapping("/relations")
     public String showRelationPage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
         if (jwtToken.isEmpty()) {
-            return "redirect:/connexion";  // Si pas de token, redirige vers la page de connexion
+            return "redirect:/connexion";
         }
 
         try {
-            // Valider et extraire les informations du token JWT
-            Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
-            return "relations";  // La vue Thymeleaf pour la page des relations
+            jwtTokenProvider.getClaimsFromToken(jwtToken);
+            return "relations";
         } catch (JwtException e) {
-            return "redirect:/connexion";  // Redirige si le token est invalide ou expiré
+            return "redirect:/connexion";
         }
     }
 
     /**
-     * Route pour afficher la page des transferts.
-     * Cette route nécessite un token JWT pour vérifier l'authentification de l'utilisateur.
+     * Affiche la page de transferts si le token JWT est valide.
      *
-     * @param jwtToken Le token JWT dans les cookies de l'utilisateur
-     * @return La vue des transferts ou redirige vers la page de connexion si le token est invalide
+     * @param jwtToken le token JWT récupéré depuis les cookies
+     * @return le nom de la vue "transfer" ou une redirection vers "/connexion" si le token est absent ou invalide
      */
     @GetMapping("/transfer")
     public String showTransferPage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken) {
         if (jwtToken.isEmpty()) {
-            return "redirect:/connexion";  // Si pas de token, redirige vers la page de connexion
+            return "redirect:/connexion";
         }
 
         try {
-            // Valider et extraire les informations du token JWT
-            Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
-            return "transfer";  // La vue Thymeleaf pour la page des transferts
+            jwtTokenProvider.getClaimsFromToken(jwtToken);
+            return "transfer";
         } catch (JwtException e) {
-            return "redirect:/connexion";  // Redirige si le token est invalide ou expiré
+            return "redirect:/connexion";
         }
     }
 
     /**
-     * Route pour afficher la page du profil.
-     * Cette route nécessite un token JWT pour vérifier l'authentification de l'utilisateur.
+     * Affiche la page du profil de l'utilisateur si le token JWT est valide.
+     * Les informations de l'utilisateur sont ajoutées au modèle.
      *
-     * @param jwtToken Le token JWT dans les cookies de l'utilisateur
-     * @param model Le modèle Thymeleaf pour passer les données à la vue
-     * @return La vue du profil ou redirige vers la page de connexion si le token est invalide
+     * @param jwtToken le token JWT récupéré depuis les cookies
+     * @param model le modèle utilisé pour injecter les données dans la vue
+     * @return le nom de la vue "profil" ou une redirection vers "/connexion" si le token est absent ou invalide
      */
     @GetMapping("/profil")
     public String showProfilPage(@CookieValue(value = "JWT", defaultValue = "") String jwtToken, Model model) {
         if (jwtToken.isEmpty()) {
-            return "redirect:/connexion";  // Si pas de token, redirige vers la page de connexion
+            return "redirect:/connexion";
         }
 
         try {
-            // Valider et extraire les informations du token JWT
             Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
-            String email = claims.getSubject();  // Récupère l'email de l'utilisateur connecté
-
-            // Récupérer l'utilisateur depuis le service en utilisant l'email
+            String email = claims.getSubject();
             User user = userService.findUserByEmail(email);
-
-            // Ajouter les données de l'utilisateur au modèle
-            model.addAttribute("user", user);  // Passer l'objet User à la vue
-
-            return "profil";  // La vue Thymeleaf pour le profil
+            model.addAttribute("user", user);
+            return "profil";
         } catch (JwtException e) {
-            return "redirect:/connexion";  // Redirige si le token est invalide ou expiré
+            return "redirect:/connexion";
         }
     }
-
 }

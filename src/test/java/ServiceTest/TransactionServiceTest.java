@@ -1,4 +1,4 @@
-package ServiceTest;
+package com.paymybuddy.service;
 
 import com.paymybuddy.dao.TransactionDAO;
 import com.paymybuddy.dao.UserDAO;
@@ -6,7 +6,6 @@ import com.paymybuddy.exception.EmailNotFoundException;
 import com.paymybuddy.exception.InvalidAmountException;
 import com.paymybuddy.model.Transactions;
 import com.paymybuddy.model.User;
-import com.paymybuddy.service.TransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -17,6 +16,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Test unitaire pour le {@link TransactionService}.
+ * Ce test vérifie le bon fonctionnement des méthodes liées à la gestion des transactions entre utilisateurs.
+ * Les tests couvrent l'ajout de transactions, la gestion des erreurs, et la récupération des transactions.
+ */
 public class TransactionServiceTest {
 
     @Mock
@@ -27,17 +31,26 @@ public class TransactionServiceTest {
 
     private TransactionService transactionService;
 
+    /**
+     * Méthode exécutée avant chaque test pour initialiser les objets nécessaires.
+     * Elle initialise les mocks et configure les dépendances du {@link TransactionService}.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         transactionService = new TransactionService();
-        // Injecter les mocks manuellement
+        // Injection des mocks dans le service
         ReflectionTestUtils.setField(transactionService, "userDAO", userDAO);
         ReflectionTestUtils.setField(transactionService, "transactionDAO", transactionDAO);
     }
 
+    /**
+     * Test pour la méthode {@link TransactionService#addTransaction(String, String, String, double)}.
+     * Vérifie que la méthode lève une exception lorsque le montant est nul ou négatif.
+     */
     @Test
     void addTransaction_ShouldThrowInvalidAmountException_WhenAmountIsZeroOrNegative() {
+        // Vérification que l'exception est levée pour un montant invalide (0 ou négatif)
         assertThrows(InvalidAmountException.class, () -> {
             transactionService.addTransaction("sender@example.com", "receiver@example.com", "Test Transaction", 0);
         });
@@ -47,15 +60,24 @@ public class TransactionServiceTest {
         });
     }
 
+    /**
+     * Test pour la méthode {@link TransactionService#addTransaction(String, String, String, double)}.
+     * Vérifie que la méthode lève une exception lorsque l'email de l'expéditeur est introuvable.
+     */
     @Test
     void addTransaction_ShouldThrowEmailNotFoundException_WhenSenderNotFound() {
         when(userDAO.findByEmail("sender@example.com")).thenReturn(null);
 
+        // Vérification que l'exception est levée pour un expéditeur introuvable
         assertThrows(EmailNotFoundException.class, () -> {
             transactionService.addTransaction("sender@example.com", "receiver@example.com", "Test Transaction", 100);
         });
     }
 
+    /**
+     * Test pour la méthode {@link TransactionService#addTransaction(String, String, String, double)}.
+     * Vérifie que la méthode lève une exception lorsque l'email du récepteur est introuvable.
+     */
     @Test
     void addTransaction_ShouldThrowEmailNotFoundException_WhenReceiverNotFound() {
         User sender = new User();
@@ -64,11 +86,16 @@ public class TransactionServiceTest {
         when(userDAO.findByEmail("sender@example.com")).thenReturn(sender);
         when(userDAO.findByEmail("receiver@example.com")).thenReturn(null);
 
+        // Vérification que l'exception est levée pour un récepteur introuvable
         assertThrows(EmailNotFoundException.class, () -> {
             transactionService.addTransaction("sender@example.com", "receiver@example.com", "Test Transaction", 100);
         });
     }
 
+    /**
+     * Test pour la méthode {@link TransactionService#addTransaction(String, String, String, double)}.
+     * Vérifie que la méthode ajoute correctement une transaction valide.
+     */
     @Test
     void addTransaction_ShouldAddTransaction_WhenValidData() {
         User sender = new User();
@@ -88,22 +115,36 @@ public class TransactionServiceTest {
         when(userDAO.findByEmail("receiver@example.com")).thenReturn(receiver);
 
         // Appeler la méthode et vérifier le comportement
-        transactionService.addTransaction("sender@example.com", "receiver@example.com", "Test Transaction", 100);
+        Transactions result = transactionService.addTransaction("sender@example.com", "receiver@example.com", "Test Transaction", 100);
 
-        // Vérification que save a bien été appelé sans vérifier le retour
-        verify(transactionDAO).save(any(Transactions.class));  // Vérifie que save a été appelé
+        // Vérification que save a bien été appelé
+        verify(transactionDAO).save(any(Transactions.class));
+
+        // Vérification des valeurs de la transaction
+        assertEquals(sender, result.getSender());
+        assertEquals(receiver, result.getReceiver());
+        assertEquals("Test Transaction", result.getDescription());
+        assertEquals(100, result.getAmount());
     }
 
-
+    /**
+     * Test pour la méthode {@link TransactionService#getUserTransactions(String)}.
+     * Vérifie que la méthode lève une exception lorsque l'utilisateur est introuvable.
+     */
     @Test
     void getUserTransactions_ShouldThrowEmailNotFoundException_WhenUserNotFound() {
         when(userDAO.findByEmail("user@example.com")).thenReturn(null);
 
+        // Vérification que l'exception est levée pour un utilisateur introuvable
         assertThrows(EmailNotFoundException.class, () -> {
             transactionService.getUserTransactions("user@example.com");
         });
     }
 
+    /**
+     * Test pour la méthode {@link TransactionService#getUserTransactions(String)}.
+     * Vérifie que la méthode retourne les transactions d'un utilisateur existant.
+     */
     @Test
     void getUserTransactions_ShouldReturnTransactions_WhenUserExists() {
         User user = new User();
@@ -122,6 +163,7 @@ public class TransactionServiceTest {
 
         List<Transactions> result = transactionService.getUserTransactions("user@example.com");
 
+        // Vérification des transactions retournées
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals(100, result.get(0).getAmount());

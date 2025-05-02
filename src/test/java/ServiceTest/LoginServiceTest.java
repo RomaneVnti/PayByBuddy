@@ -1,9 +1,8 @@
-package ServiceTest;
+package com.paymybuddy.service;
 
 import com.paymybuddy.dao.UserDAO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.security.JwtTokenProvider;
-import com.paymybuddy.service.LoginService;
 import com.paymybuddy.exception.InvalidLoginException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,18 +23,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LoginServiceTest {
 
     @Mock
-    private UserDAO userDAO;  // Mock du DAO pour les utilisateurs
+    private UserDAO userDAO;
 
     @Mock
-    private BCryptPasswordEncoder passwordEncoder;  // Mock de l'encodeur de mot de passe
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Mock
-    private JwtTokenProvider jwtTokenProvider;  // Mock du fournisseur de token JWT
+    private JwtTokenProvider jwtTokenProvider;
 
     @InjectMocks
-    private LoginService loginService;  // Injecte les mocks dans le service
-
-    private User user;  // Utilisateur pour les tests
+    private LoginService loginService;
+    private User user;
     private String email;
     private String password;
 
@@ -71,7 +69,6 @@ public class LoginServiceTest {
         // Appel du service pour authentifier l'utilisateur
         String result = loginService.authenticate(email, password);
 
-        // Assertions
         assertNotNull(result);  // Vérifie que le token est non nul
         assertEquals(token, result);  // Vérifie que le token retourné est correct
     }
@@ -91,7 +88,7 @@ public class LoginServiceTest {
         });
 
         // Vérification que l'exception contient le bon message
-        assertEquals("Invalid email or password", thrown.getMessage());
+        assertEquals("Email ou mot de passe invalide", thrown.getMessage());
     }
 
     /**
@@ -109,6 +106,22 @@ public class LoginServiceTest {
         });
 
         // Vérification que l'exception contient le bon message
-        assertEquals("Invalid email or password", thrown.getMessage());
+        assertEquals("Email ou mot de passe invalide", thrown.getMessage());
+    }
+
+    /**
+     * Test pour l'authentification échouée de l'utilisateur si le mot de passe est vide.
+     * Vérifie que le service lève une exception InvalidLoginException si le mot de passe est vide.
+     */
+    @Test
+    void authenticate_Failure_EmptyPassword() {
+        // Test avec un mot de passe vide
+        String emptyPassword = "";
+        InvalidLoginException thrown = assertThrows(InvalidLoginException.class, () -> {
+            loginService.authenticate(email, emptyPassword);  // Appel avec un mot de passe vide
+        });
+
+        // Vérification que l'exception contient le bon message
+        assertEquals("Email ou mot de passe invalide", thrown.getMessage());
     }
 }

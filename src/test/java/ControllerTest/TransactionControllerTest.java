@@ -1,7 +1,6 @@
 package com.paymybuddy.controller;
 
 import com.paymybuddy.model.Transactions;
-import com.paymybuddy.model.User;
 import com.paymybuddy.service.TransactionService;
 import com.paymybuddy.security.JwtTokenProvider;
 import com.paymybuddy.exception.EmailNotFoundException;
@@ -17,15 +16,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
- * Test unitaire pour le contrôleur {@link TransactionController}.
- * Utilise Mockito pour simuler les dépendances et tester les comportements du contrôleur.
+ * Classe de test pour le contrôleur {@link TransactionController}.
+ * Utilise JUnit 5 et Mockito pour simuler le comportement des services et vérifier le bon fonctionnement des méthodes du contrôleur.
  */
 @ExtendWith(MockitoExtension.class)
 class TransactionControllerTest {
@@ -33,8 +31,10 @@ class TransactionControllerTest {
     @InjectMocks
     private TransactionController transactionController;
 
+
     @Mock
     private TransactionService transactionService;
+
 
     @Mock
     private JwtTokenProvider jwtTokenProvider;
@@ -43,11 +43,19 @@ class TransactionControllerTest {
     private Claims claims;
 
     private String validToken = "valid-token";
+
+
+    private String bearerToken = "Bearer " + validToken;
+
+
     private String currentUserEmail = "test@example.com";
+
+
     private TransactionController.TransactionRequest transactionRequest;
 
     /**
-     * Méthode exécutée avant chaque test pour initialiser les objets nécessaires.
+     * Initialisation avant chaque test.
+     * Crée une demande de transaction avec des données prédéfinies.
      */
     @BeforeEach
     void setUp() {
@@ -58,182 +66,167 @@ class TransactionControllerTest {
     }
 
     /**
-     * Test pour la création d'une transaction valide.
-     * Vérifie que la réponse HTTP est Created (201) et que la transaction créée correspond à celle attendue.
+     * Teste la création d'une transaction avec des données valides.
+     * Vérifie que la transaction est correctement créée et que la réponse est "Created".
      */
     @Test
     void createTransaction_ShouldReturnCreated_WhenValidRequest() {
         when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
         when(claims.getSubject()).thenReturn(currentUserEmail);
 
-        User senderUser = new User();
-        senderUser.setEmail(currentUserEmail);
+        Transactions expectedTransaction = new Transactions();
+        expectedTransaction.setDescription(transactionRequest.getDescription());
+        expectedTransaction.setAmount(transactionRequest.getAmount());
 
-        User receiverUser = new User();
-        receiverUser.setEmail(transactionRequest.getReceiverEmail());
+        when(transactionService.addTransaction(any(), any(), any(), anyDouble()))
+                .thenReturn(expectedTransaction);
 
-        Transactions transaction = new Transactions();
-        transaction.setSender(senderUser);
-        transaction.setReceiver(receiverUser);
-        transaction.setDescription(transactionRequest.getDescription());
-        transaction.setAmount(transactionRequest.getAmount());
-
-        when(transactionService.addTransaction(anyString(), anyString(), anyString(), anyDouble()))
-                .thenReturn(transaction);
-
-        ResponseEntity<?> response = transactionController.createTransaction("Bearer " + validToken, transactionRequest);
+        ResponseEntity<?> response = transactionController.createTransaction(bearerToken, transactionRequest);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        Transactions responseBody = (Transactions) response.getBody();
-        assertNotNull(responseBody);
-        assertEquals(transaction.getSender().getEmail(), responseBody.getSender().getEmail());
-        assertEquals(transaction.getReceiver().getEmail(), responseBody.getReceiver().getEmail());
+        assertEquals(expectedTransaction, response.getBody());
     }
 
     /**
-     * Test pour la gestion d'un token invalide ou expiré lors de la création de la transaction.
-     * Vérifie que la réponse HTTP est Unauthorized (401) et que le message d'erreur approprié est renvoyé.
+     * Teste la création d'une transaction avec un token invalide.
+     * Vérifie que la réponse retournée est "Unauthorized".
      */
     @Test
-    void createTransaction_ShouldReturnUnauthorized_WhenTokenIsInvalid() {
+    void createTransaction_ShouldReturnUnauthorized_WhenTokenInvalid() {
         when(jwtTokenProvider.getClaimsFromToken(validToken)).thenThrow(new JwtException("Invalid token"));
 
-        ResponseEntity<?> response = transactionController.createTransaction("Bearer " + validToken, transactionRequest);
+        ResponseEntity<?> response = transactionController.createTransaction(bearerToken, transactionRequest);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertEquals("Token invalide ou expiré", ((TransactionController.ApiResponse) response.getBody()).getMessage());
+        TransactionController.ApiResponse body = (TransactionController.ApiResponse) response.getBody();
+        assertEquals("Token invalide ou expiré", body.getMessage());
+        assertNull(body.getData());
     }
 
     /**
-     * Test pour la gestion de l'exception lorsque l'email du destinataire n'est pas trouvé.
-     * Vérifie que la réponse HTTP est Bad Request (400) et que le message d'erreur est "Email not found".
+     * Teste la création d'une transaction avec un email non trouvé.
+     * Vérifie que la réponse retournée est "BadRequest" avec le message d'erreur.
      */
     @Test
     void createTransaction_ShouldReturnBadRequest_WhenEmailNotFound() {
         when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
         when(claims.getSubject()).thenReturn(currentUserEmail);
-
-        when(transactionService.addTransaction(anyString(), anyString(), anyString(), anyDouble()))
+        when(transactionService.addTransaction(any(), any(), any(), anyDouble()))
                 .thenThrow(new EmailNotFoundException("Email not found"));
 
-        ResponseEntity<?> response = transactionController.createTransaction("Bearer " + validToken, transactionRequest);
+        ResponseEntity<?> response = transactionController.createTransaction(bearerToken, transactionRequest);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Email not found", ((TransactionController.ApiResponse) response.getBody()).getMessage());
+        TransactionController.ApiResponse body = (TransactionController.ApiResponse) response.getBody();
+        assertEquals("Email not found", body.getMessage());
     }
 
     /**
-     * Test pour la gestion de l'exception lorsque le montant de la transaction est invalide.
-     * Vérifie que la réponse HTTP est Bad Request (400) et que le message d'erreur est "Invalid amount".
+     * Teste la création d'une transaction avec un montant invalide.
+     * Vérifie que la réponse retournée est "BadRequest" avec le message d'erreur.
      */
     @Test
     void createTransaction_ShouldReturnBadRequest_WhenInvalidAmount() {
         when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
         when(claims.getSubject()).thenReturn(currentUserEmail);
-
-        when(transactionService.addTransaction(anyString(), anyString(), anyString(), anyDouble()))
+        when(transactionService.addTransaction(any(), any(), any(), anyDouble()))
                 .thenThrow(new InvalidAmountException("Invalid amount"));
 
-        ResponseEntity<?> response = transactionController.createTransaction("Bearer " + validToken, transactionRequest);
+        ResponseEntity<?> response = transactionController.createTransaction(bearerToken, transactionRequest);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Invalid amount", ((TransactionController.ApiResponse) response.getBody()).getMessage());
+        TransactionController.ApiResponse body = (TransactionController.ApiResponse) response.getBody();
+        assertEquals("Invalid amount", body.getMessage());
     }
 
     /**
-     * Test pour la gestion d'une erreur générale lors de la création de la transaction.
-     * Vérifie que la réponse HTTP est Bad Request (400) et que le message d'erreur indique un problème général.
+     * Teste la création d'une transaction lorsqu'une erreur générale se produit.
+     * Vérifie que la réponse retournée est "BadRequest" avec un message d'erreur générique.
      */
     @Test
     void createTransaction_ShouldReturnBadRequest_WhenGeneralError() {
         when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
         when(claims.getSubject()).thenReturn(currentUserEmail);
+        when(transactionService.addTransaction(any(), any(), any(), anyDouble()))
+                .thenThrow(new RuntimeException("Unexpected error"));
 
-        when(transactionService.addTransaction(anyString(), anyString(), anyString(), anyDouble()))
-                .thenThrow(new RuntimeException("General error"));
-
-        ResponseEntity<?> response = transactionController.createTransaction("Bearer " + validToken, transactionRequest);
+        ResponseEntity<?> response = transactionController.createTransaction(bearerToken, transactionRequest);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Erreur lors de la création de la transaction", ((TransactionController.ApiResponse) response.getBody()).getMessage());
+        TransactionController.ApiResponse body = (TransactionController.ApiResponse) response.getBody();
+        assertEquals("Erreur lors de la création de la transaction", body.getMessage());
     }
 
     /**
-     * Test pour récupérer les transactions d'un utilisateur.
-     * Vérifie que la réponse HTTP est OK (200) et que la liste des transactions est renvoyée.
+     * Teste la récupération des transactions de l'utilisateur avec un token valide.
+     * Vérifie que la réponse retournée est "OK" et contient les transactions de l'utilisateur.
      */
     @Test
-    void getUserTransactions_ShouldReturnOk_WhenTokenIsValid() {
+    void getUserTransactions_ShouldReturnOk_WhenValidToken() {
         when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
         when(claims.getSubject()).thenReturn(currentUserEmail);
 
-        List<Transactions> transactionList = new ArrayList<>();
-        Transactions transaction = new Transactions();
-        transaction.setAmount(50.0);
-        transaction.setDescription("Test");
-        transactionList.add(transaction);
+        List<Transactions> transactions = List.of(new Transactions());
 
-        when(transactionService.getUserTransactions(currentUserEmail)).thenReturn(transactionList);
+        when(transactionService.getUserTransactions(currentUserEmail)).thenReturn(transactions);
 
-        ResponseEntity<?> response = transactionController.getUserTransactions("Bearer " + validToken);
+        ResponseEntity<?> response = transactionController.getUserTransactions(bearerToken);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        TransactionController.ApiResponse apiResponse = (TransactionController.ApiResponse) response.getBody();
-        assertNotNull(apiResponse);
-        assertEquals("Transactions récupérées avec succès", apiResponse.getMessage());
-        assertEquals(transactionList, apiResponse.getData());
+        Map<String, Object> outerMap = (Map<String, Object>) response.getBody();
+        Map<String, Object> dataMap = (Map<String, Object>) outerMap.get("data");
+
+        assertEquals(transactions, dataMap.get("transactions"));
     }
 
     /**
-     * Test pour la gestion d'un token invalide ou expiré lors de la récupération des transactions.
-     * Vérifie que la réponse HTTP est Unauthorized (401) et que le message d'erreur approprié est renvoyé.
+     * Teste la récupération des transactions de l'utilisateur avec un token invalide.
+     * Vérifie que la réponse retournée est "Unauthorized".
      */
     @Test
     void getUserTransactions_ShouldReturnUnauthorized_WhenTokenInvalid() {
         when(jwtTokenProvider.getClaimsFromToken(validToken)).thenThrow(new JwtException("Invalid token"));
 
-        ResponseEntity<?> response = transactionController.getUserTransactions("Bearer " + validToken);
+        ResponseEntity<?> response = transactionController.getUserTransactions(bearerToken);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        TransactionController.ApiResponse apiResponse = (TransactionController.ApiResponse) response.getBody();
-        assertEquals("Token invalide ou expiré", apiResponse.getMessage());
+        TransactionController.ApiResponse body = (TransactionController.ApiResponse) response.getBody();
+        assertEquals("Token invalide ou expiré", body.getMessage());
     }
 
     /**
-     * Test pour la gestion de l'exception lorsque l'email de l'utilisateur est introuvable lors de la récupération des transactions.
-     * Vérifie que la réponse HTTP est Bad Request (400) et que le message d'erreur est "Email not found".
+     * Teste la récupération des transactions de l'utilisateur avec un email non trouvé.
+     * Vérifie que la réponse retournée est "BadRequest" avec le message d'erreur.
      */
     @Test
     void getUserTransactions_ShouldReturnBadRequest_WhenEmailNotFound() {
         when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
         when(claims.getSubject()).thenReturn(currentUserEmail);
-
         when(transactionService.getUserTransactions(currentUserEmail))
                 .thenThrow(new EmailNotFoundException("Email not found"));
 
-        ResponseEntity<?> response = transactionController.getUserTransactions("Bearer " + validToken);
+        ResponseEntity<?> response = transactionController.getUserTransactions(bearerToken);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        TransactionController.ApiResponse apiResponse = (TransactionController.ApiResponse) response.getBody();
-        assertEquals("Email not found", apiResponse.getMessage());
+        TransactionController.ApiResponse body = (TransactionController.ApiResponse) response.getBody();
+        assertEquals("Email not found", body.getMessage());
     }
 
     /**
-     * Test pour la gestion d'une erreur générale lors de la récupération des transactions.
-     * Vérifie que la réponse HTTP est Bad Request (400) et que le message d'erreur indique un problème général.
+     * Teste la récupération des transactions de l'utilisateur lorsqu'une erreur générale se produit.
+     * Vérifie que la réponse retournée est "BadRequest" avec un message d'erreur générique.
      */
     @Test
     void getUserTransactions_ShouldReturnBadRequest_WhenGeneralErrorOccurs() {
         when(jwtTokenProvider.getClaimsFromToken(validToken)).thenReturn(claims);
         when(claims.getSubject()).thenReturn(currentUserEmail);
-
         when(transactionService.getUserTransactions(currentUserEmail))
                 .thenThrow(new RuntimeException("Unexpected error"));
 
-        ResponseEntity<?> response = transactionController.getUserTransactions("Bearer " + validToken);
+        ResponseEntity<?> response = transactionController.getUserTransactions(bearerToken);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        TransactionController.ApiResponse apiResponse = (TransactionController.ApiResponse) response.getBody();
-        assertEquals("Erreur lors de la récupération des transactions", apiResponse.getMessage());
+        TransactionController.ApiResponse body = (TransactionController.ApiResponse) response.getBody();
+        assertEquals("Erreur lors de la récupération des transactions", body.getMessage());
     }
 }

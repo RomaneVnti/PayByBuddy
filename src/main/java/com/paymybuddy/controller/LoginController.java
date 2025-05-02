@@ -32,20 +32,16 @@ public class LoginController {
     public ResponseEntity<Void> login(@RequestParam("email") String email,
                                       @RequestParam("password") String password,
                                       HttpServletResponse response) {
-        // Authentifier l'utilisateur et récupérer le token JWT
         String token = loginService.authenticate(email, password);
 
-        // Créer un cookie pour stocker le token JWT
         Cookie cookie = new Cookie("JWT", token);
-        cookie.setHttpOnly(false);  // Le cookie ne sera pas accessible par JavaScript (peut-être pour faciliter les tests)
-        cookie.setSecure(false);    // Utiliser false pour HTTP, à modifier en true pour HTTPS
-        cookie.setPath("/");        // Le cookie est accessible pour toute l'application
-        cookie.setMaxAge(3600);     // Le cookie expirera après 1 heure
+        cookie.setHttpOnly(false);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        cookie.setMaxAge(3600);
 
-        // Ajouter le cookie à la réponse HTTP
         response.addCookie(cookie);
 
-        // Rediriger vers la page d'accueil après la connexion réussie
         return ResponseEntity.status(HttpStatus.FOUND).header("Location", "/home").build();
     }
 }
