@@ -14,15 +14,14 @@ Elle permet aux utilisateurs de créer un compte, ajouter des relations, et effe
 ## 🔧 Technologies utilisées
 
 - Java 21
-- Spring Boot 3.4.2
+- Spring Boot 
 - Spring Security
 - Spring Data JPA
 - MySQL
 - JWT (JSON Web Token)
 - Maven
-- Log4j2
 - Thymeleaf 
-- JUnit & Spring Test
+- JUnit
 - JaCoCo (couverture de tests)
 
 ---

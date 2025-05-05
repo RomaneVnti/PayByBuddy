@@ -8,11 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/Transactions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/Transactions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/UserRelations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/model/UserRelations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/db/MPD_PayMyBuddy.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/MPD_PayMyBuddy.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/db/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/data.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +59,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors"
@@ -76,7 +71,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources/static" />
     </key>
   </component>
-  <component name="RunManager" selected="Maven.Run">
+  <component name="RunManager" selected="Maven.Test">
     <configuration name="RelationControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PayMyBuddy" />
       <extension name="coverage">
