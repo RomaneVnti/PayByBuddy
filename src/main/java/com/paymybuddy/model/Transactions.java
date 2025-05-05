@@ -2,7 +2,6 @@ package com.paymybuddy.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import lombok.Data;
 
 /**
  * Représente une transaction entre deux utilisateurs dans le système de gestion de transferts d'argent.

@@ -67,12 +67,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Lombok (Optional) -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
 
         <!-- Spring Boot Starter Data JPA (pour gérer les entités et la base de données) -->
         <dependency>

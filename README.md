@@ -21,8 +21,7 @@ Elle permet aux utilisateurs de créer un compte, ajouter des relations, et effe
 - JWT (JSON Web Token)
 - Maven
 - Log4j2
-- Thymeleaf (pour les templates si activé)
-- Lombok
+- Thymeleaf 
 - JUnit & Spring Test
 - JaCoCo (couverture de tests)
 

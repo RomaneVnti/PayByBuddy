@@ -1,4 +1,4 @@
--- Ces données sont à titre d'exemples, le mot de passe ne sera pas hashé car il ne passe pas par le processus de hashs
+-- Ces données sont à titre d'exemples, le mot de passe ne sera pas hashé car il ne passe pas par le processus de hash
 
 -- Insertion d'un utilisateur
 INSERT INTO user (username, email, password)

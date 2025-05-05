@@ -2,7 +2,7 @@ package com.paymybuddy.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import lombok.Data;
+
 
 /**
  * Représente un utilisateur dans le système de gestion de transferts d'argent.
@@ -10,7 +10,7 @@ import lombok.Data;
  * son email, son mot de passe, ainsi que la date de création de son compte.
  */
 @Entity
-@Data
+
 @Table(name = "user")
 public class User {
 
