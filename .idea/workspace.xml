@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fb5faf1-2af7-49b1-820d-8f54738d1560" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/exception/RelationNotFoundException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/TransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/paymybuddy/service/TransactionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ServiceTest/TransactionServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ServiceTest/TransactionServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +21,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="HTML File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -71,7 +75,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources/static" />
     </key>
   </component>
-  <component name="RunManager" selected="Maven.Test">
+  <component name="RunManager" selected="Maven.Run">
     <configuration name="RelationControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PayMyBuddy" />
       <extension name="coverage">

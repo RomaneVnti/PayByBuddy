@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     user_id_sender INT NOT NULL,
     user_id_receiver INT NOT NULL,
     description VARCHAR(255),
-    amount DOUBLE NOT NULL CHECK (amount > 0),
+    amount DECIMAL(10,2) NOT NULL CHECK (amount > 0),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id_sender) REFERENCES user(user_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id_receiver) REFERENCES user(user_id) ON DELETE CASCADE

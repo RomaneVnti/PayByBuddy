@@ -2,10 +2,12 @@ package com.paymybuddy.service;
 
 import com.paymybuddy.dao.TransactionDAO;
 import com.paymybuddy.dao.UserDAO;
+import com.paymybuddy.dao.UserRelationsDAO;
 import com.paymybuddy.exception.EmailNotFoundException;
 import com.paymybuddy.exception.InvalidAmountException;
 import com.paymybuddy.model.Transactions;
 import com.paymybuddy.model.User;
+import com.paymybuddy.model.UserRelations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -29,6 +31,9 @@ public class TransactionServiceTest {
     @Mock
     private TransactionDAO transactionDAO;
 
+    @Mock
+    private UserRelationsDAO userRelationsDAO;
+
     private TransactionService transactionService;
 
     /**
@@ -42,6 +47,8 @@ public class TransactionServiceTest {
         // Injection des mocks dans le service
         ReflectionTestUtils.setField(transactionService, "userDAO", userDAO);
         ReflectionTestUtils.setField(transactionService, "transactionDAO", transactionDAO);
+        ReflectionTestUtils.setField(transactionService, "userRelationsDAO", userRelationsDAO);
+
     }
 
     /**
@@ -99,9 +106,11 @@ public class TransactionServiceTest {
     @Test
     void addTransaction_ShouldAddTransaction_WhenValidData() {
         User sender = new User();
+        sender.setUserId(1);
         sender.setEmail("sender@example.com");
 
         User receiver = new User();
+        receiver.setUserId(2);
         receiver.setEmail("receiver@example.com");
 
         Transactions transaction = new Transactions();
@@ -110,22 +119,20 @@ public class TransactionServiceTest {
         transaction.setDescription("Test Transaction");
         transaction.setAmount(100);
 
-        // Simuler les comportements des mocks
         when(userDAO.findByEmail("sender@example.com")).thenReturn(sender);
         when(userDAO.findByEmail("receiver@example.com")).thenReturn(receiver);
+        when(userRelationsDAO.findRelationByIds(1, 2)).thenReturn(new UserRelations());
 
-        // Appeler la méthode et vérifier le comportement
         Transactions result = transactionService.addTransaction("sender@example.com", "receiver@example.com", "Test Transaction", 100);
 
-        // Vérification que save a bien été appelé
         verify(transactionDAO).save(any(Transactions.class));
 
-        // Vérification des valeurs de la transaction
         assertEquals(sender, result.getSender());
         assertEquals(receiver, result.getReceiver());
         assertEquals("Test Transaction", result.getDescription());
         assertEquals(100, result.getAmount());
     }
+
 
     /**
      * Test pour la méthode {@link TransactionService#getUserTransactions(String)}.

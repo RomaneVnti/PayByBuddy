@@ -2,12 +2,16 @@ package com.paymybuddy.service;
 
 import com.paymybuddy.dao.TransactionDAO;
 import com.paymybuddy.dao.UserDAO;
+import com.paymybuddy.dao.UserRelationsDAO;
+import com.paymybuddy.exception.RelationNotFoundException;
 import com.paymybuddy.model.Transactions;
 import com.paymybuddy.model.User;
 import com.paymybuddy.exception.EmailNotFoundException;
 import com.paymybuddy.exception.InvalidAmountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
@@ -25,6 +29,9 @@ public class TransactionService {
     @Autowired
     private TransactionDAO transactionDAO;
 
+    @Autowired
+    private UserRelationsDAO userRelationsDAO;
+
     /**
      * Ajoute une nouvelle transaction entre deux utilisateurs.
      *
@@ -36,6 +43,7 @@ public class TransactionService {
      * @throws InvalidAmountException si le montant est inférieur ou égal à zéro
      * @throws EmailNotFoundException si l'expéditeur ou le destinataire n'existe pas
      */
+    @Transactional
     public Transactions addTransaction(String senderEmail, String receiverEmail, String description, double amount) {
         if (amount <= 0) {
             throw new InvalidAmountException("Le montant doit être supérieur à zéro.");
@@ -49,6 +57,10 @@ public class TransactionService {
         User receiver = userDAO.findByEmail(receiverEmail);
         if (receiver == null) {
             throw new EmailNotFoundException("L'utilisateur destinataire n'existe pas.");
+        }
+
+        if (userRelationsDAO.findRelationByIds(sender.getUserId(), receiver.getUserId()) == null) {
+            throw new RelationNotFoundException("Les utilisateurs ne sont pas en relation.");
         }
 
         Transactions transaction = new Transactions();
