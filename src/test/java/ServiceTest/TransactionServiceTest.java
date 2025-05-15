@@ -108,16 +108,12 @@ public class TransactionServiceTest {
         User sender = new User();
         sender.setUserId(1);
         sender.setEmail("sender@example.com");
+        sender.setSolde(200); // Solde suffisant
 
         User receiver = new User();
         receiver.setUserId(2);
         receiver.setEmail("receiver@example.com");
-
-        Transactions transaction = new Transactions();
-        transaction.setSender(sender);
-        transaction.setReceiver(receiver);
-        transaction.setDescription("Test Transaction");
-        transaction.setAmount(100);
+        receiver.setSolde(50);
 
         when(userDAO.findByEmail("sender@example.com")).thenReturn(sender);
         when(userDAO.findByEmail("receiver@example.com")).thenReturn(receiver);

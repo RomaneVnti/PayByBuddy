@@ -6,6 +6,36 @@ function getCookie(name) {
     return null;
 }
 
+function loadSolde() {
+    const token = getCookie("JWT");
+    if (!token) {
+        showError("Token JWT manquant ou invalide.");
+        return;
+    }
+
+    fetch("http://localhost:8080/user/user/profil", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération du solde");
+        }
+        return response.json();
+    })
+    .then(data => {
+        const solde = data.solde || 0;
+        document.getElementById("soldeValue").textContent = solde.toFixed(2);
+    })
+    .catch(error => {
+        console.error("Erreur :", error);
+        document.getElementById("soldeValue").textContent = "Erreur";
+    });
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     // Charger les relations de l'utilisateur connecté
     fetch("/user-relations", {
@@ -92,8 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
         .then(data => {
-            showError("");  // Nettoyer les messages d'erreur
-            loadTransactions(); // Rafraîchir la liste des transactions
+            showError("");
+            loadTransactions();
+            loadSolde();
         })
         .catch(error => {
             console.error("Erreur :", error);
@@ -158,6 +189,6 @@ document.addEventListener("DOMContentLoaded", function () {
             showError("Impossible de charger les transactions.");
         });
     }
-
+loadSolde();
     loadTransactions(); // Charger les transactions au démarrage
 });

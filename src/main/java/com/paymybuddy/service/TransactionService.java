@@ -4,6 +4,7 @@ import com.paymybuddy.dao.TransactionDAO;
 import com.paymybuddy.dao.UserDAO;
 import com.paymybuddy.dao.UserRelationsDAO;
 import com.paymybuddy.exception.RelationNotFoundException;
+import com.paymybuddy.exception.SoldeInvalidException;
 import com.paymybuddy.model.Transactions;
 import com.paymybuddy.model.User;
 import com.paymybuddy.exception.EmailNotFoundException;
@@ -63,6 +64,20 @@ public class TransactionService {
             throw new RelationNotFoundException("Les utilisateurs ne sont pas en relation.");
         }
 
+        // Vérifier le solde de l'expéditeur
+        if (sender.getSolde() < amount) {
+            throw new SoldeInvalidException("Solde insuffisant. Solde actuel = " + sender.getSolde() + ", montant à débiter = " + amount);
+        }
+
+        // Mettre à jour les soldes
+        sender.setSolde(sender.getSolde() - amount);
+        receiver.setSolde(receiver.getSolde() + amount);
+
+        // Sauvegarder les mises à jour des utilisateurs
+        userDAO.save(sender);
+        userDAO.save(receiver);
+
+        // Créer et sauvegarder la transaction
         Transactions transaction = new Transactions();
         transaction.setSender(sender);
         transaction.setReceiver(receiver);
@@ -72,6 +87,7 @@ public class TransactionService {
         transactionDAO.save(transaction);
         return transaction;
     }
+
 
     /**
      * Récupère toutes les transactions associées à un utilisateur donné,
